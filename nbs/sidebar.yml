@@ -1,0 +1,29 @@
+website:
+  sidebar:
+    contents:
+      - index.ipynb
+      - 00_core.ipynb
+      - section: posts
+        contents:
+          - posts/2022-07-21-PBL-neo4j_intro.ipynb
+          - posts/2022-08-22-AP-python_hello.ipynb
+          - posts/2022-08-22-HM-anthony_and_sahil.ipynb
+          - posts/2022-08-22-PBL-bash_tutorial.ipynb
+          - posts/2022-08-25-tool_check.ipynb
+          - posts/2022-08-29-AP-python_lists.ipynb
+          - posts/2022-09-19-PBL-javascript_tutorial.ipynb
+          - posts/2022-10-03-AP-error_testing.ipynb
+          - posts/2022-10-03-PBL-python_rapidapi.ipynb
+          - posts/2022-10-17-PBL-javascript_frontend.ipynb
+          - posts/2022-10-17-PBL-webapi_tutorial.ipynb
+          - posts/2022-10-24-javascript-input-tutorial.ipynb
+          - posts/2022-11-07-AP-logic-and-algos.ipynb
+          - posts/2022-12-01-PBL-2d-iteration.ipynb
+          - section: post-with-code
+            contents:
+              - posts/post-with-code/index.qmd
+      - section: posts
+        contents:
+          - section: welcome
+            contents:
+              - posts/welcome/index.qmd
