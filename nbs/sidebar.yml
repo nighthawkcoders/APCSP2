@@ -3,27 +3,93 @@ website:
     contents:
       - index.ipynb
       - 00_core.ipynb
-      - section: posts
+      - section: blog
         contents:
-          - posts/2022-07-21-PBL-neo4j_intro.ipynb
-          - posts/2022-08-22-AP-python_hello.ipynb
-          - posts/2022-08-22-HM-anthony_and_sahil.ipynb
-          - posts/2022-08-22-PBL-bash_tutorial.ipynb
-          - posts/2022-08-25-tool_check.ipynb
-          - posts/2022-08-29-AP-python_lists.ipynb
-          - posts/2022-09-19-PBL-javascript_tutorial.ipynb
-          - posts/2022-10-03-AP-error_testing.ipynb
-          - posts/2022-10-03-PBL-python_rapidapi.ipynb
-          - posts/2022-10-17-PBL-javascript_frontend.ipynb
-          - posts/2022-10-17-PBL-webapi_tutorial.ipynb
-          - posts/2022-10-24-javascript-input-tutorial.ipynb
-          - posts/2022-11-07-AP-logic-and-algos.ipynb
-          - posts/2022-12-01-PBL-2d-iteration.ipynb
-          - section: post-with-code
+          - blog/index.qmd
+          - section: posts
             contents:
-              - posts/post-with-code/index.qmd
-      - section: posts
+              - blog/posts/2022-06-01-nbdev_quarto.qmd
+      - section: blog
         contents:
-          - section: welcome
+          - section: posts
             contents:
-              - posts/welcome/index.qmd
+              - blog/posts/2022-07-21-PBL-neo4j_intro.ipynb
+      - section: blog
+        contents:
+          - section: posts
+            contents:
+              - blog/posts/2022-08-22-AP-python_hello.ipynb
+      - section: blog
+        contents:
+          - section: posts
+            contents:
+              - blog/posts/2022-08-22-HM-anthony_and_sahil.ipynb
+      - section: blog
+        contents:
+          - section: posts
+            contents:
+              - blog/posts/2022-08-22-PBL-bash_tutorial.ipynb
+      - section: blog
+        contents:
+          - section: posts
+            contents:
+              - blog/posts/2022-08-25-tool_check.ipynb
+      - section: blog
+        contents:
+          - section: posts
+            contents:
+              - blog/posts/2022-08-29-AP-python_lists.ipynb
+      - section: blog
+        contents:
+          - section: posts
+            contents:
+              - blog/posts/2022-09-19-PBL-javascript_tutorial.ipynb
+      - section: blog
+        contents:
+          - section: posts
+            contents:
+              - blog/posts/2022-10-03-AP-error_testing.ipynb
+      - section: blog
+        contents:
+          - section: posts
+            contents:
+              - blog/posts/2022-10-03-PBL-python_rapidapi.ipynb
+      - section: blog
+        contents:
+          - section: posts
+            contents:
+              - blog/posts/2022-10-17-PBL-javascript_frontend.ipynb
+      - section: blog
+        contents:
+          - section: posts
+            contents:
+              - blog/posts/2022-10-17-PBL-webapi_tutorial.ipynb
+      - section: blog
+        contents:
+          - section: posts
+            contents:
+              - blog/posts/2022-10-24-javascript-input-tutorial.ipynb
+      - section: blog
+        contents:
+          - section: posts
+            contents:
+              - blog/posts/2022-11-07-AP-logic-and-algos.ipynb
+      - section: blog
+        contents:
+          - section: posts
+            contents:
+              - blog/posts/2022-12-01-PBL-2d-iteration.ipynb
+      - section: blog
+        contents:
+          - section: posts
+            contents:
+              - section: post-with-code
+                contents:
+                  - blog/posts/post-with-code/index.qmd
+      - section: blog
+        contents:
+          - section: posts
+            contents:
+              - section: welcome
+                contents:
+                  - blog/posts/welcome/index.qmd
