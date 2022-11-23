@@ -1,0 +1,9 @@
+project:
+  output-dir: _docs
+
+website:
+  title: "APCSP2"
+  site-url: "https://syeung2.github.io/APCSP2"
+  description: "Transfer APCSP"
+  repo-branch: main
+  repo-url: "https://github.com/syeung2/APCSP2"
