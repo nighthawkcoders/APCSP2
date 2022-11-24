@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.269">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2022-08-15">
+<meta name="description" content="Don’t do it alone. Pair Programming allows you to have secondary thinking as you work, not just a reflection after you are done, but real time.">
+
+<title>APCSP2 - Tool Setup Sprint and Pair Programming</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="APCSP2 - Tool Setup Sprint and Pair Programming">
+<meta property="og:description" content="Don't do it alone.  Pair Programming allows you to have secondary thinking as you work, not just a reflection after you are done, but real time.">
+<meta property="og:image" content="https://syeung2.github.io/APCSP2/blog/posts/pair_programming.png">
+<meta property="og:site-name" content="APCSP2">
+<meta name="twitter:title" content="APCSP2 - Tool Setup Sprint and Pair Programming">
+<meta name="twitter:description" content="Don't do it alone.  Pair Programming allows you to have secondary thinking as you work, not just a reflection after you are done, but real time.">
+<meta name="twitter:image" content="https://syeung2.github.io/APCSP2/blog/posts/pair_programming.png">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">APCSP2</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog/index.html">
+ <span class="menu-text">Blog</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../schedule/index.html">
+ <span class="menu-text">Schedule</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../ap/index.html">
+ <span class="menu-text">AP Standards</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../cte/index.html">
+ <span class="menu-text">CTE Standards</span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">Tool Setup Sprint and Pair Programming</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#ap-csa-course-outline" id="toc-ap-csa-course-outline" class="nav-link active" data-scroll-target="#ap-csa-course-outline">AP CSA COURSE OUTLINE</a>
+  <ul class="collapse">
+  <li><a href="#real-world-projects" id="toc-real-world-projects" class="nav-link" data-scroll-target="#real-world-projects">“Real World” Projects</a>
+  <ul class="collapse">
+  <li><a href="#establish-pbl-and-comp-sci-attitude" id="toc-establish-pbl-and-comp-sci-attitude" class="nav-link" data-scroll-target="#establish-pbl-and-comp-sci-attitude">Establish PBL and Comp Sci attitude</a></li>
+  </ul></li>
+  <li><a href="#assignments-and-work" id="toc-assignments-and-work" class="nav-link" data-scroll-target="#assignments-and-work">Assignments and Work</a>
+  <ul class="collapse">
+  <li><a href="#pbl-sprint-0-week-0" id="toc-pbl-sprint-0-week-0" class="nav-link" data-scroll-target="#pbl-sprint-0-week-0">PBL Sprint 0 / Week 0</a></li>
+  <li><a href="#equipment-accounts-and-tools" id="toc-equipment-accounts-and-tools" class="nav-link" data-scroll-target="#equipment-accounts-and-tools">Equipment, accounts and tools</a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/syeung2/APCSP2/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">Tool Setup Sprint and Pair Programming</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">C1.4</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Don’t do it alone. Pair Programming allows you to have secondary thinking as you work, not just a reflection after you are done, but real time.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">August 15, 2022</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<p><a href="https://github.com/nighthawkcoders/APCSP/issues/11">Points Link</a></p>
+<section id="ap-csa-course-outline" class="level1">
+<h1>AP CSA COURSE OUTLINE</h1>
+<ul>
+<li>Methodology.
+<ul>
+<li>Project Based Learning (PBL)</li>
+<li>AP Classroom. The 10 Units of AP Computer Science A</li>
+<li>Code.org curriculum challenges</li>
+</ul></li>
+<li>Key Principles
+<ul>
+<li>Leaning to Code
+<ul>
+<li>Mini Labs on PBL, AP, and Code.org challenges</li>
+<li>Programming, Algorithms, Databases, and APIs</li>
+<li>Team and Individual Project will highlight all 5 Big Units, either academically or in interest fashion</li>
+</ul></li>
+<li>Succeed on Exam
+<ul>
+<li>Work with AP MCQs and Create Performance Task</li>
+<li>Work with Code.org segments to complement Test Prep</li>
+<li>Student led Paper FRQs and MCQ analysis exercises</li>
+</ul></li>
+<li>Preparing for Internships, “Real World”
+<ul>
+<li>Follow practices to becoming a software engineer</li>
+<li>Collaboratively Build, Deploy and Host Web Pages</li>
+<li>Establish “Real World” Scrum Team projectsPreference with Customer/Sponsor</li>
+<li>Follow Agile methodology using GitHub, Issues and Projects tools</li>
+</ul></li>
+<li>Become a Blogger
+<ul>
+<li>Build individual GitHub Pages Web Site to _post Notes and Learnings</li>
+<li>Learn to publish and share what you have learned</li>
+</ul></li>
+</ul></li>
+</ul>
+<section id="real-world-projects" class="level2">
+<h2 class="anchored" data-anchor-id="real-world-projects">“Real World” Projects</h2>
+<p>You, your pair, and your Scrum Team will collaboratively Build, deploy and host Web Site. This Web project contains Technicals learned throughout the Trimester. This will be done in increments. Each Monday an assignment will be given and the next week it will be under Live Review.</p>
+<ul>
+<li>Feature Considerations for Project
+<ul>
+<li>Project Requirements
+<ul>
+<li>A fun zone, unique idea(s)</li>
+<li>Educational zones that capture every key learning objective</li>
+<li>A location that highlights individuals, jobs, and technical capabilities (About Us)</li>
+</ul></li>
+<li>Project Technicals
+<ul>
+<li>Managing PBL Requirement for Project (Issues, Scrum Board)</li>
+<li>Use of “Python Functions and Classes” in backend.</li>
+<li>Use of “JavaScript” or “Jinja2” in frontend</li>
+<li>Data Structure exchange between frontend and backend “SQL” or “MongoDB”</li>
+</ul></li>
+</ul></li>
+<li>Individual GitHub Pages considerations for Big Ideas 1 - 5
+<ul>
+<li>Each week we will be studying Big Ideas in Collage Board Test Prep and PBL Tech Talks</li>
+<li>GH Pages should be used like notes to capture PBL, Python, JavaScript key learnings each week!<br>
+</li>
+<li>BTW, using GH Pages will make you Code and Blog at the same time. Jupyter Notebooks using Python and Markdown will enable running code in notes, the Teachers like running code! Jupyter Notebooks can also do JavaScript, Bash and other languages.</li>
+</ul></li>
+</ul>
+<section id="establish-pbl-and-comp-sci-attitude" class="level3">
+<h3 class="anchored" data-anchor-id="establish-pbl-and-comp-sci-attitude">Establish PBL and Comp Sci attitude</h3>
+<p>Watch a video <a href="https://www.youtube.com/watch?v=k9WqpQp8VSU">How I Would Learn To Code</a> - Attitude. An Agile mindset is not knowing the answer, making lots of mistakes and performing iteration. A successful grade is dependent on making mistakes, research, asking questions, and iteration. - Suggestion. Please bring a personal laptop to class daily. The Internet and AP Classroom web site will be considered a text book.<br>
+- Requirements. Everything will be distributed electronically. All code you develop will be delivered to the Cloud. No paper! - Grading guidelines. There will be key technical objectives which will require producing tangibles. Essentially, it is impossible to be late with work if you work consistently attend class, work in class and turn in progressive tangibles each week. Thus, failure to have work will result in a 10% deduction. Additionally, late work must be defended in office hours.<br>
+- High “A” is very tough to achieve, something beyond the given tangible requirements. Something that exhibits an unforced desire to learn and Code/Code/Code. - Low “A” is consistency in producing tangibles toward Team Project and Individual GH Page according to Issues and Scrum Board plans. Plans must be consistent with key objectives and technicals. - “B” is having flaws in consistency or tangible shortcomings, but mostly on track. A flaw would be mostly working code, attempts, but incomplete. - “C” is a lack consistent effort, lacking tangibles. Lack of producing working Code. - Below “C” is composed of Slash/Slash/Slash offenses. Lack of attendance, disruptive behaviors, doing work from other classes during CompSci class time, paper visible in class, and turning in tangibles that you can’t represent in live review. - Zero is a result of plagiarism. The Teachers will likely miss first offense of plagiarism, thus any offense will result in an inquiry on previous work. Remember this is an effort based class.</p>
+</section>
+</section>
+<section id="assignments-and-work" class="level2">
+<h2 class="anchored" data-anchor-id="assignments-and-work">Assignments and Work</h2>
+<ul>
+<li>Assignments mostly Due either Friday or Monday at the start of class (canvas is official record for point guidelines and synergy for points received)
+<ul>
+<li>Live Grading, all grading is complemented by Self/Crossover assessments. Teachers are passionate about quality crossover reviews. This a big part of your personal learning. Taking a review lightly is taking your grade lightly, as poor review will cause a reduction in your own points.</li>
+<li>Always prepare Review Ticket (GH Issue) using canvas assignment as a guide</li>
+</ul></li>
+<li>Trimester starts with 5 point seed (highly engaged +, extra activities +, distracted -)</li>
+<li>There will be about 50 points per trimester, we will save a big chunk of points for the last few weeks of Trimester. Don’t get comfortable, keep working your CompSci muscles.</li>
+</ul>
+<section id="pbl-sprint-0-week-0" class="level3">
+<h3 class="anchored" data-anchor-id="pbl-sprint-0-week-0">PBL Sprint 0 / Week 0</h3>
+<p>Learning outcome. Getting adapted to the Agile mindset used in Computer Science. Additionally, getting introduced to GitHub and showing usage of VSCode. Building a personal and running Fastpages/GitHub Pages. - Wednesday - “Introduction Sprint”. Pick pair share partner, Pick crossover pair, Establish team of four. Based off of modulo mathematics (remainder) there can only be 3 teams of 5 maximum. Spend some time talking and getting to know each other. Consider key roles in Project Teams as Scrum Master (Issues, Scrum Board), DevOps (GitHub, Deploy, .gitignore, requirements.txt), Frontend Developer (HTML, Jinja2, Javascript), Backend Developer (Flask, Python) - Thursday - Review “Tools and Equipment”. Bringing your laptop. Setup Fastpages and Tools and push code to your Repo and track updates of Fastpages to deployment. - Friday - Start with Pair Share coding. Spend 25 minutes at keyboard finishing installation and performing fastpages coding, while Pair Share observes and consults. Next 25 minutes Pairs reverse roles.</p>
+</section>
+<section id="equipment-accounts-and-tools" class="level3">
+<h3 class="anchored" data-anchor-id="equipment-accounts-and-tools">Equipment, accounts and tools</h3>
+<ul>
+<li>A laptop, that you bring to class every day with the Development Tools installed on it.</li>
+<li>GitHub Account, VSCode will be used to push/pull changes. GitHub is where we store and share code in the cloud, think of Google Docs but for Code.</li>
+<li>GitHub Pages will be used to host your personal web site, notes, and experiences. Building pages will teach Markdown, HTML Fragments, and JavaScript.</li>
+<li>Jupyter Notebooks will be used in conjunction with GitHub Pages to build running Python Code in your Technical Notes.</li>
+<li>Slack Account, install App on Laptop, get used to reading announcements. Slack is the tool will use for messaging, we have been averaging 50K messages per year.</li>
+<li>Python is the key language you will be using in this class. Flask, Jinja2, HTML, CSS, JavaScript are the key supporting technicals you will be using to enhance your learning.</li>
+<li>VSCode is the code editor we will be using in this class. VSCode is more than and editor, this type of tool is often called an Interactive Development Environment (IDE).</li>
+<li>AWS is used for deployment, an AWS account will be provided by Teacher. AWS Cloud Computing and Servers will be used to Deploy and Support projects on the internet.</li>
+</ul>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

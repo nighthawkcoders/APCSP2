@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.269">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Ellen Xu">
+<meta name="dcterms.date" content="2022-09-12">
+<meta name="description" content="Serving Fastpages locally using Docker. This allows local machine testing of each change of code without the delay of GitHub Actions.">
+
+<title>APCSP2 - Fastpages local server</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="APCSP2 - Fastpages local server">
+<meta property="og:description" content="Serving Fastpages locally using Docker.  This allows local machine testing of each change of code without the delay of GitHub Actions.">
+<meta property="og:image" content="https://syeung2.github.io/APCSP2/blog/posts/fastpages_docker.png">
+<meta property="og:site-name" content="APCSP2">
+<meta name="twitter:title" content="APCSP2 - Fastpages local server">
+<meta name="twitter:description" content="Serving Fastpages locally using Docker.  This allows local machine testing of each change of code without the delay of GitHub Actions.">
+<meta name="twitter:image" content="https://syeung2.github.io/APCSP2/blog/posts/fastpages_docker.png">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">APCSP2</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog/index.html">
+ <span class="menu-text">Blog</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../schedule/index.html">
+ <span class="menu-text">Schedule</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../ap/index.html">
+ <span class="menu-text">AP Standards</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../cte/index.html">
+ <span class="menu-text">CTE Standards</span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">Fastpages local server</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#overview-of-steps" id="toc-overview-of-steps" class="nav-link active" data-scroll-target="#overview-of-steps">Overview of steps</a>
+  <ul class="collapse">
+  <li><a href="#installation" id="toc-installation" class="nav-link" data-scroll-target="#installation">1. Installation</a></li>
+  <li><a href="#for-windows-set-up-docker-with-wsl" id="toc-for-windows-set-up-docker-with-wsl" class="nav-link" data-scroll-target="#for-windows-set-up-docker-with-wsl">2. (For Windows) Set up Docker with WSL</a></li>
+  <li><a href="#optional-download-docker-extension-in-vscode" id="toc-optional-download-docker-extension-in-vscode" class="nav-link" data-scroll-target="#optional-download-docker-extension-in-vscode">(Optional) Download Docker extension in VSCode</a></li>
+  <li><a href="#using-vscode-terminal-run-make-server" id="toc-using-vscode-terminal-run-make-server" class="nav-link" data-scroll-target="#using-vscode-terminal-run-make-server">3. Using VSCode Terminal, run: <code>make server</code></a></li>
+  <li><a href="#view-blog" id="toc-view-blog" class="nav-link" data-scroll-target="#view-blog">4. View blog</a></li>
+  <li><a href="#resources" id="toc-resources" class="nav-link" data-scroll-target="#resources">Resources</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/syeung2/APCSP2/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">Fastpages local server</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">C7.1</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Serving Fastpages locally using Docker. This allows local machine testing of each change of code without the delay of GitHub Actions.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Ellen Xu </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 12, 2022</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<p>It’s often useful to test pages locally before deploying, as it can save time and be helpful for testing quick changes/debugging. In this blog we’ll learn how to deploy fastpages locally using Docker.</p>
+<section id="overview-of-steps" class="level2">
+<h2 class="anchored" data-anchor-id="overview-of-steps">Overview of steps</h2>
+<ol type="1">
+<li>Download Docker desktop</li>
+<li>(For Windows) Set up Docker with WSL</li>
+<li>Run <code>make server</code> in repo directory</li>
+<li>Click in terminal or type localhost link show (ex. http://127.0.0.1:4000/{repo name}) to view your Fastpages Blog site.</li>
+</ol>
+<section id="installation" class="level3">
+<h3 class="anchored" data-anchor-id="installation">1. Installation</h3>
+<p>Docker is a lightweight method to build, deploy, run, update and manage containers. Download Docker desktop from following links:</p>
+<p>Windows: https://docs.docker.com/desktop/install/windows-install/ Mac: https://docs.docker.com/desktop/install/mac-install/.</p>
+<p>Now, each time you want to <code>make server</code>, you need to start Docker desktop or make sure it running. Make sure you do this before building locally!</p>
+</section>
+<section id="for-windows-set-up-docker-with-wsl" class="level3">
+<h3 class="anchored" data-anchor-id="for-windows-set-up-docker-with-wsl">2. (For Windows) Set up Docker with WSL</h3>
+<p>For Windows, to set up Docker with WSL use https://docs.docker.com/desktop/windows/wsl/.</p>
+</section>
+<section id="optional-download-docker-extension-in-vscode" class="level3">
+<h3 class="anchored" data-anchor-id="optional-download-docker-extension-in-vscode">(Optional) Download Docker extension in VSCode</h3>
+<p>VSCode has an extension too make it easier to manage docker containers and images directly in your IDE. To download, go to the Extensions tab of VSCode (left bar, or Ctrl+Shift+X), search “Docker” and download the extension from Microsoft. You should now see a docker icon on the left bar, which you can click on to see your Docker connections.</p>
+</section>
+<section id="using-vscode-terminal-run-make-server" class="level3">
+<h3 class="anchored" data-anchor-id="using-vscode-terminal-run-make-server">3. Using VSCode Terminal, run: <code>make server</code></h3>
+<p>In the local repository, make sure you are cd’ed to the base/root directory (i.e.&nbsp;where the Makefile is). For Ellen that was the ap-csa-fastpages directory as pictured. For Mr M, <code>cd ~/vscode/APCSA</code> sets him in his APCSA repository, here the <code>make server</code> command will work if Docker is running.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://user-images.githubusercontent.com/56745453/186964001-45e37d26-45b0-484d-bac6-b85b67cb2ffb.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">image</figcaption><p></p>
+</figure>
+</div>
+<p>The Makefile contains common aliased commands for building and serving your fastpages locally. If you look inside the file or run <code>make</code> in terminal, you can see what docker commands it can run.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://user-images.githubusercontent.com/56745453/186964281-4c238041-0e9e-4319-affa-5d0aebe084b3.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">image</figcaption><p></p>
+</figure>
+</div>
+<p>Specifically, we are interested in the <code>make server</code> command, which will build the container the first time and start the Jekyll server. If you remember from APCSP, Jekyll is what powers Github pages behind the scenes. You can build your GitHub Pages site locally using Jekyll to preview and test changes to your site.</p>
+<section id="special-steps-for-windows" class="level4">
+<h4 class="anchored" data-anchor-id="special-steps-for-windows">Special steps for Windows</h4>
+<p>The first time, you might get this issue:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://user-images.githubusercontent.com/56745453/186963057-bb16c926-33f5-41cb-abe1-65886678f477.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">image</figcaption><p></p>
+</figure>
+</div>
+<p>If that’s the case, make sure this setting is toggled on in Docker desktop settings:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://user-images.githubusercontent.com/56745453/186963251-602a4073-caab-40ca-8441-55be64d9c7f7.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">image</figcaption><p></p>
+</figure>
+</div>
+<p>It should ask you to reload and if you run the command again it should work now.</p>
+</section>
+</section>
+<section id="view-blog" class="level3">
+<h3 class="anchored" data-anchor-id="view-blog">4. View blog</h3>
+<p>After running, look for link to run Server. For me, this was http://127.0.0.1:4000/{repo name}: &gt; Server address: http://127.0.0.1:4000/</p>
+<blockquote class="blockquote">
+<p>Server running… press ctrl-c to stop.</p>
+</blockquote>
+<p><mark>Shift-click server address</mark> to launch in Browser.</p>
+<p><mark>Leave the server running!!!</mark></p>
+<p><mark>Make edits in VSCode and save the file</mark>. On each save, watch terminal in VSCode to see updates and regeneration of WebSite.</p>
+<p><mark>Refresh or click to Web page of change and you will see updates almost instantly</mark>. Refer to VSCode terminal to see any error encountered when running your server. As indicated ctrl-c will stop the server, however, I have left it running for hours of edits, testing, and commits to GitHub.</p>
+<p>Alert, when you are satisfied with local changes… <mark>you must ✔️Commit and Sync to GitHub</mark>. The local server is used to preview and test change prior to Sync. Only after Sync, will others be able to see your changes.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://user-images.githubusercontent.com/56745453/186968485-a2d02d10-d53a-4b88-b6b1-bbcc2f69d1cc.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">image</figcaption><p></p>
+</figure>
+</div>
+<section id="add-to-.gitignore" class="level4">
+<h4 class="anchored" data-anchor-id="add-to-.gitignore">Add to .gitignore</h4>
+<p>A side effect of building locally is that it converts all the .ipynb and .docx files to .md. This means that some files will have duplicates after building – one in .ipynb or .docx, another in .md form.</p>
+<p>To avoid duplicates masters when pushing to github, add the md generated files from to the .gitignore. This can be done by right clicking md file when preparing commits. Below is a sample .gitignore. The 1st three lines should be universal to all fastpages projects, the other files are specific to your project.</p>
+<pre><code># Ignore from local build
+settings.ini
+Gemfile.lock
+images/copied_from_nb/
+_posts/2022-08-15-AP-anatomy.md
+_posts/2022-08-22-HM-anthony_and_sahil.md
+_posts/2022-08-22-TT-darkmode.md
+_posts/2022-08-22-AP-primitives.md
+_posts/2022-08-22-TT-bash_tutorial.md
+_posts/2022-08-29-AP-using_java_objects.md
+_posts/2022-09-05-AP-boolean_ifs.md
+_posts/2022-09-19-TT-js_tutorial.md
+_posts/2022-09-26-TT-rapidapi.md</code></pre>
+</section>
+</section>
+<section id="resources" class="level3">
+<h3 class="anchored" data-anchor-id="resources">Resources</h3>
+<p>https://github.com/fastai/fastpages/blob/master/_fastpages_docs/DEVELOPMENT.md</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

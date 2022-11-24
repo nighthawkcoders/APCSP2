@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.269">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2022-07-08">
+<meta name="description" content="A remix of Conway’s game of life using timer, onclick and algorithms.">
+
+<title>APCSP2 - Game of Life</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="APCSP2 - Game of Life">
+<meta property="og:description" content="A remix of Conway's game of life using timer, onclick and algorithms.">
+<meta property="og:image" content="https://syeung2.github.io/APCSP2/blog/posts/game_of_life.svg">
+<meta property="og:site-name" content="APCSP2">
+<meta name="twitter:title" content="APCSP2 - Game of Life">
+<meta name="twitter:description" content="A remix of Conway's game of life using timer, onclick and algorithms.">
+<meta name="twitter:image" content="https://syeung2.github.io/APCSP2/blog/posts/game_of_life.svg">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">APCSP2</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog/index.html">
+ <span class="menu-text">Blog</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../schedule/index.html">
+ <span class="menu-text">Schedule</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../ap/index.html">
+ <span class="menu-text">AP Standards</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../cte/index.html">
+ <span class="menu-text">CTE Standards</span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">Game of Life</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">Game of Life</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">javascript</div>
+    <div class="quarto-category">setInterval</div>
+    <div class="quarto-category">onclick</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    A remix of Conway’s game of life using timer, onclick and algorithms.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">July 8, 2022</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<p>{% include nav_frontend.html %}</p>
+<p>{% comment %} Conway’s Game of Life https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life {% endcomment %}</p>
+<style>
+    #container {
+    display: grid;
+    }
+
+    .cell {
+    background-color: royalblue;
+    border: 1px solid black;
+    }
+</style>
+<div class="container">
+<pre><code>&lt;header class="pb-3 mb-4 border-bottom border-primary text-dark"&gt;
+    &lt;span class="fs-4"&gt;Remix of Game of Life&lt;/span&gt;
+&lt;/header&gt;
+&lt;!-- Buttons that link to functions in javascript --&gt;
+&lt;button onclick="start()" id="start-btn"&gt;start&lt;/button&gt;
+&lt;button onclick="step()"&gt;step&lt;/button&gt;
+&lt;!-- Container drawn by JavaScript --&gt;
+&lt;div id="container" class="container py-4"&gt;
+&lt;/div&gt;</code></pre>
+</div>
+<script>
+
+// Constants
+let GRID_SIZE = 40;
+let CELL_SIZE = "15px";
+let container = document.getElementById("container");
+
+// Add CSS to container to make it a grid
+container.style["grid-template-columns"] = `repeat(${GRID_SIZE}, ${CELL_SIZE})`;
+// Add squares to grid
+for(let i=0; i<GRID_SIZE*GRID_SIZE; i++) {
+    let di = document.createElement('div');
+    di.style['width'] = CELL_SIZE;
+    di.style['height'] = CELL_SIZE;
+    di.onclick = clicked; // setting event listener to clicked function
+    di.ondragstart = dragged;
+    di.ondragover = dragged;
+    di.className = 'cell';
+    di.id = 'cell-'+i;
+    container.appendChild(di)
+}
+
+
+const CELLS = Array(GRID_SIZE).fill().map(() => Array(GRID_SIZE).fill(0)); // create 2D array filled with '0'
+const safeindex = (x, y) => !(x < 0 || x >= GRID_SIZE || y<0 || y >= GRID_SIZE); // Anonymous function to check bounds of index
+// safeindex(0,0) = true
+// safeindex(-1,-1) = false, because -1 falls out of bounds
+
+
+function safeGet(x, y) {
+    if(!safeindex(x,y)) return 0;
+    if(CELLS[y][x] === 0) return 0; // blank square
+    if(CELLS[y][x] === 1) return 1; // filled square
+    if(CELLS[y][x] === 2) return 0; // previously blank square
+    if(CELLS[y][x] === 3) return 1; // previously filled square
+    console.error("AHH"); // should never get here
+}
+
+// helper function to set a square on the grid
+function setCell(n, v) {
+    let row = Math.floor(n/GRID_SIZE);
+    let col = n%GRID_SIZE;
+    CELLS[row][col] = v;
+}
+
+// Helper function to toggle a cell by it's index
+function toggleCell(n) {
+    let row = Math.floor(n/GRID_SIZE);
+    let col = n%GRID_SIZE;
+    CELLS[row][col] = CELLS[row][col] === 0 ? 1 : 0;
+}
+
+
+// Call this every interval, it will look through our CELLS array and reflect its data on the grid
+function updateContainer() {
+    CELLS.forEach((arr, r) => {
+    arr.forEach((val, c) => {
+        let n = r*GRID_SIZE + c;
+        if(val === 1) {
+        document.getElementById("cell-"+n).style['background-color'] = 'yellow';
+        }else {
+        document.getElementById("cell-"+n).style['background-color'] = 'royalblue'
+        }
+    });
+    })
+}
+
+
+// will be called whenever a cell is clicked
+function clicked() {
+    const id = parseInt(this.id.substring(5), 10); // the id of a cell is "cell-XX" where XX is the index
+    toggleCell(id); // if a cell is clicked we will toggle it
+    updateContainer();
+}
+
+// Same thing as clicked except tied to drag event
+function dragged() {
+    const id = parseInt(this.id.substring(5), 10);
+    setCell(id, 1);
+    updateContainer()
+}
+
+// Randomly setting cells to 1 in the grid
+function randomInit(n) {
+    let max = GRID_SIZE*GRID_SIZE;
+    for(let i=0; i<n; i++) {
+    setCell(Math.floor(Math.random()*max), 1)
+    }
+    updateContainer();
+}
+
+// check how many alive neighbors a cell has
+function getNeighbors(x,y) {
+    const l = x-1;
+    const r = x+1;
+    const u = y-1;
+    const d = y+1;
+
+    return safeGet(l, y) +
+            safeGet(r, y) +
+            safeGet(x, u) +
+            safeGet(x, d) +
+            safeGet(l, u) +
+            safeGet(r, u) +
+            safeGet(l, d) +
+            safeGet(r, d);
+}
+
+function step() {
+    for(let y=0; y<GRID_SIZE; y++) {
+        for(let x=0; x<GRID_SIZE; x++) { // for every square in the grid...
+
+            const n = getNeighbors(x, y); // find how many alive neighbors it has
+            const val = safeGet(x, y); // Get the value of the cell
+
+            if(val === 0) { // if the cell is dead...
+                if(n === 3) { // and it has three alive neighbors...
+                    CELLS[y][x] = 2; // Make this cell come to life
+                }
+            } else { // If the cell is alive...
+                if(n === 2 || n === 3) { // and it has ONLY 2 or ONLY 3 alive neighbors...
+                    CELLS[y][x] = 3; // The cell gets to live another round
+                }
+            }
+
+        }
+    }
+
+    // Run through every modified cell and convert it to either alive or dead
+    for(let y=0; y<GRID_SIZE; y++) {
+        for(let x=0; x<GRID_SIZE; x++) {
+            CELLS[y][x] = Math.floor(CELLS[y][x]/2);
+        }
+    }
+
+    updateContainer(); // call the update function to reflect changes in the
+}
+
+
+let paused = false;
+const startbtn = document.getElementById("start-btn");
+
+// used to toggle the animation
+function togglePause() {
+    paused = !paused;
+    if(paused) {
+    startbtn.innerHTML = "resume"
+    } else {
+    startbtn.innerHTML = "pause";
+    }
+}
+
+// Used to start the animation
+function start() {
+    startbtn.innerHTML = "pause";
+    startbtn.onclick = togglePause;
+
+    // setInterval will call the function within it ever 100ms
+    const interval = setInterval(function() {
+    if(!paused) {
+        step();
+    }
+    }, 100);
+}
+
+</script>
+
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

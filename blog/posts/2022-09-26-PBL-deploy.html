@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.269">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2022-09-26">
+<meta name="description" content="Description of key methods process used to deploy a Flask/Python website; AWS EC2, Docker, docker-compose, and Nginx">
+
+<title>APCSP2 - Flask/Python Deployment Guide</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="APCSP2 - Flask/Python Deployment Guide">
+<meta property="og:description" content="Description of key methods process used to deploy a Flask/Python website; AWS EC2, Docker, docker-compose, and Nginx">
+<meta property="og:image" content="https://syeung2.github.io/APCSP2/blog/posts/aws.png">
+<meta property="og:site-name" content="APCSP2">
+<meta name="twitter:title" content="APCSP2 - Flask/Python Deployment Guide">
+<meta name="twitter:description" content="Description of key methods process used to deploy a Flask/Python website; AWS EC2, Docker, docker-compose, and Nginx">
+<meta name="twitter:image" content="https://syeung2.github.io/APCSP2/blog/posts/aws.png">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">APCSP2</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog/index.html">
+ <span class="menu-text">Blog</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../schedule/index.html">
+ <span class="menu-text">Schedule</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../ap/index.html">
+ <span class="menu-text">AP Standards</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../cte/index.html">
+ <span class="menu-text">CTE Standards</span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">Flask/Python Deployment Guide</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#deployment-overview" id="toc-deployment-overview" class="nav-link active" data-scroll-target="#deployment-overview">Deployment Overview</a>
+  <ul class="collapse">
+  <li><a href="#keyvalues-required-as-you-go-through-these-procedures" id="toc-keyvalues-required-as-you-go-through-these-procedures" class="nav-link" data-scroll-target="#keyvalues-required-as-you-go-through-these-procedures">Key/Values required as you go through these procedures</a></li>
+  </ul></li>
+  <li><a href="#server-setup-and-initial-deployment" id="toc-server-setup-and-initial-deployment" class="nav-link" data-scroll-target="#server-setup-and-initial-deployment">Server Setup and Initial Deployment</a></li>
+  <li><a href="#deployment-process" id="toc-deployment-process" class="nav-link" data-scroll-target="#deployment-process">Deployment Process</a>
+  <ul class="collapse">
+  <li><a href="#connect-to-ec2-through-cloud" id="toc-connect-to-ec2-through-cloud" class="nav-link" data-scroll-target="#connect-to-ec2-through-cloud">Connect to EC2 through cloud</a></li>
+  <li><a href="#update-upgrade-and-install-packages" id="toc-update-upgrade-and-install-packages" class="nav-link" data-scroll-target="#update-upgrade-and-install-packages">Update, Upgrade, and Install packages</a></li>
+  <li><a href="#clone-and-change-directory-to-project-location" id="toc-clone-and-change-directory-to-project-location" class="nav-link" data-scroll-target="#clone-and-change-directory-to-project-location">Clone and Change Directory to project location</a></li>
+  <li><a href="#test-web-service" id="toc-test-web-service" class="nav-link" data-scroll-target="#test-web-service">Test Web Service</a></li>
+  <li><a href="#create-dockerfile-to-run-web-service" id="toc-create-dockerfile-to-run-web-service" class="nav-link" data-scroll-target="#create-dockerfile-to-run-web-service">Create Dockerfile to run Web Service</a></li>
+  <li><a href="#create-docker-compose-file-share-web-service" id="toc-create-docker-compose-file-share-web-service" class="nav-link" data-scroll-target="#create-docker-compose-file-share-web-service">Create docker-compose file share Web Service</a></li>
+  <li><a href="#running-docker-using-docker-compose.yml" id="toc-running-docker-using-docker-compose.yml" class="nav-link" data-scroll-target="#running-docker-using-docker-compose.yml">Running Docker using docker-compose.yml</a></li>
+  <li><a href="#verifying-web-application-via-docker-commands" id="toc-verifying-web-application-via-docker-commands" class="nav-link" data-scroll-target="#verifying-web-application-via-docker-commands">Verifying Web Application via Docker commands</a></li>
+  <li><a href="#testing-localhost-endpoint" id="toc-testing-localhost-endpoint" class="nav-link" data-scroll-target="#testing-localhost-endpoint">Testing localhost endpoint</a></li>
+  </ul></li>
+  <li><a href="#test-preparation-for-docker-web-application-using-ip-for-internet-access" id="toc-test-preparation-for-docker-web-application-using-ip-for-internet-access" class="nav-link" data-scroll-target="#test-preparation-for-docker-web-application-using-ip-for-internet-access">Test preparation for Docker Web Application using IP for Internet Access</a>
+  <ul class="collapse">
+  <li><a href="#activating-nginx-configuration" id="toc-activating-nginx-configuration" class="nav-link" data-scroll-target="#activating-nginx-configuration">Activating Nginx configuration</a></li>
+  <li><a href="#testing-http-endpoint" id="toc-testing-http-endpoint" class="nav-link" data-scroll-target="#testing-http-endpoint">Testing HTTP endpoint</a></li>
+  </ul></li>
+  <li><a href="#final-preparation-the-docker-web-application-using-dns-for-internet-access" id="toc-final-preparation-the-docker-web-application-using-dns-for-internet-access" class="nav-link" data-scroll-target="#final-preparation-the-docker-web-application-using-dns-for-internet-access">Final preparation the Docker Web Application using DNS for Internet Access</a>
+  <ul class="collapse">
+  <li><a href="#testing-http-endpoint-1" id="toc-testing-http-endpoint-1" class="nav-link" data-scroll-target="#testing-http-endpoint-1">Testing HTTP endpoint</a></li>
+  <li><a href="#certbot-install-and-configuration" id="toc-certbot-install-and-configuration" class="nav-link" data-scroll-target="#certbot-install-and-configuration">Certbot install and configuration</a></li>
+  </ul></li>
+  <li><a href="#update-deployment-this-process-is-after-you-change-code" id="toc-update-deployment-this-process-is-after-you-change-code" class="nav-link" data-scroll-target="#update-deployment-this-process-is-after-you-change-code">Update Deployment, this process is after you change code</a>
+  <ul class="collapse">
+  <li><a href="#goto-project-directory" id="toc-goto-project-directory" class="nav-link" data-scroll-target="#goto-project-directory">Goto Project directory</a></li>
+  <li><a href="#shutdown-process-and-update-source" id="toc-shutdown-process-and-update-source" class="nav-link" data-scroll-target="#shutdown-process-and-update-source">Shutdown process and update source</a></li>
+  <li><a href="#rebuild-and-restart-web-application" id="toc-rebuild-and-restart-web-application" class="nav-link" data-scroll-target="#rebuild-and-restart-web-application">Rebuild and Restart Web Application</a></li>
+  </ul></li>
+  <li><a href="#good-examples" id="toc-good-examples" class="nav-link" data-scroll-target="#good-examples">Good Examples</a>
+  <ul class="collapse">
+  <li><a href="#docker-compose.yml-sudo-docker-compose-up--d" id="toc-docker-compose.yml-sudo-docker-compose-up--d" class="nav-link" data-scroll-target="#docker-compose.yml-sudo-docker-compose-up--d">docker-compose.yml (sudo docker-compose up -d)</a></li>
+  <li><a href="#docker-ps" id="toc-docker-ps" class="nav-link" data-scroll-target="#docker-ps">Docker PS</a></li>
+  <li><a href="#nginx-ip-test-file-sudo-systemctl-nginx-restart" id="toc-nginx-ip-test-file-sudo-systemctl-nginx-restart" class="nav-link" data-scroll-target="#nginx-ip-test-file-sudo-systemctl-nginx-restart">Nginx IP test file (sudo systemctl nginx restart)</a></li>
+  <li><a href="#nginx-sites-available-cd-etcnginxsites-available" id="toc-nginx-sites-available-cd-etcnginxsites-available" class="nav-link" data-scroll-target="#nginx-sites-available-cd-etcnginxsites-available">Nginx sites-available (cd /etc/nginx/sites-available)</a></li>
+  <li><a href="#nginx-file-published-to-work-with-a-domain-nano-ava_nighthawk" id="toc-nginx-file-published-to-work-with-a-domain-nano-ava_nighthawk" class="nav-link" data-scroll-target="#nginx-file-published-to-work-with-a-domain-nano-ava_nighthawk">Nginx file published to work with a domain (nano ava_nighthawk)</a></li>
+  <li><a href="#nginx-sites-enable-cd-etcnginxsites-enabled" id="toc-nginx-sites-enable-cd-etcnginxsites-enabled" class="nav-link" data-scroll-target="#nginx-sites-enable-cd-etcnginxsites-enabled">Nginx sites-enable (cd /etc/nginx/sites-enabled)</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/syeung2/APCSP2/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">Flask/Python Deployment Guide</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">6.B</div>
+    <div class="quarto-category">C7.0</div>
+    <div class="quarto-category">C7.1</div>
+    <div class="quarto-category">C7.2</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Description of key methods process used to deploy a Flask/Python website; AWS EC2, Docker, docker-compose, and Nginx
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 26, 2022</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="deployment-overview" class="level2">
+<h2 class="anchored" data-anchor-id="deployment-overview">Deployment Overview</h2>
+<p>Deploying a Web Application enables a Server and Web Application to be available to users on the Internet. Development Operations (DevOps) is understanding the tools and service used to enable the Web Application on the Internet. This process can use many different cloud services, as well as choice of many different tools. Here is an overview of what is covered in this procedure.</p>
+<ul>
+<li>EC2: Amazon Web Services is a cloud computing platform that the PUSD district has provided for their students to serve our Web Application.</li>
+<li>GitHub: The leading open platform to share a code across the Internet.</li>
+<li>Docker and docker-compose: Used to host a Web Application. A Docker container prepares an environment that contains the Web Application code and all the dependencies (requirements.txt for Python) Docker is an open platform for developing, shipping, and running applications.</li>
+<li>Nginx: In order to find a Web Application on a server, there needs to be a process that listens for the Web Application request and directs it to the Web Application service. Nginx is an open source software for web serving, reverse proxy, caching, load balancing, media streaming, and more.</li>
+<li>Certbot: Web traffic on internet is reliably served over Secure Hyper Text Transfer Protocol (https). Certbot is a free, open source software tool for automatically using Let’s Encrypt certifications.</li>
+<li>DNS: Natively, the web works off of IP addresses. Domain Name Services (DNS) allows the assignment of a friendly name to a Web Server. This name is built into Nginx/Certbot configuration files. Freenom is the cloud service described in this blog and has been used to register the nighthawkcodingsociety.com domain.</li>
+</ul>
+<section id="keyvalues-required-as-you-go-through-these-procedures" class="level3">
+<h3 class="anchored" data-anchor-id="keyvalues-required-as-you-go-through-these-procedures">Key/Values required as you go through these procedures</h3>
+<p>Listed are Keys, you need to obtain “values” specific to your Web Application setup. It is important that you recognize the sample “values” as you work through these procedures, then replace them with the “values” that are specific to your Web Application use case.</p>
+<ul>
+<li>GitHub HTTPS link:</li>
+<li>IAM user:</li>
+<li>EC2 name:</li>
+<li>EC2 Public IPs:</li>
+<li>DNS Name:</li>
+<li>DNS Subdomain name(s)</li>
+<li>Docker Port:</li>
+<li>docker-compose, proxy pass Port:</li>
+<li>docker-compose, docker Image name:</li>
+<li>Nginx server file(s):</li>
+</ul>
+</section>
+</section>
+<section id="server-setup-and-initial-deployment" class="level2">
+<h2 class="anchored" data-anchor-id="server-setup-and-initial-deployment">Server Setup and Initial Deployment</h2>
+<blockquote class="blockquote">
+<p>Development Operations (DevOps) begins with server setup.<br>
+### Amazon Web Services (AWS): Electric Cloud Compute (EC2) Setup Preparing and AWS EC2 instance is the process of creating a cloud computer. This process starts by logging into your AWS IAM user, searching for EC2. - To get started, launch a new AWS EC2 instance to learn process and understand how to work with Linux. here are some key considerations. - Choose an Amazon Machine Image (AMI), the class will be using Ubuntu you should check on last verified version with a Teacher before proceeding - When it comes to picking memory or disk it is VERY important to pick Free Tier. As stated, this will only be used for testing and then it will be disposed for cost efficiency. - When presented with access dialog for http and https, make sure you check these boxes. Remember you are making a Web application that will run over http and https. - Name the security group (.pem) file after your self or team. It may be necessary to use SSH to access your EC2 instance. - The remainder of the steps you can use the defaults, refer to AWS documentation for guidance: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EC2_GetStarted.html - At the end of this process you need to “Connect to Instance”. This will provide you a terminal like experience.</p>
+</blockquote>
+</section>
+<section id="deployment-process" class="level2">
+<h2 class="anchored" data-anchor-id="deployment-process">Deployment Process</h2>
+<blockquote class="blockquote">
+<p>Deployment begins with terminal connections. It is necessary to run commands to setup files to enable your Web Application to run on the Internet.</p>
+</blockquote>
+<section id="connect-to-ec2-through-cloud" class="level3">
+<h3 class="anchored" data-anchor-id="connect-to-ec2-through-cloud">Connect to EC2 through cloud</h3>
+<blockquote class="blockquote">
+<p>Connect to an Ubuntu EC2 instance on AWS and then begin the system and software setup. - Select your machine and press “Connect” at top middle. <img src="{{site.baseurl}}/images/aws_connect.png" class="img-fluid" alt="AWS Connect"> - On next screen ensure things are lined “EC2 Instance Connect” and press “Connect” at bottom. <img src="{{site.baseurl}}/images/aws_connect2.png" class="img-fluid" alt="AWS2 Connect"> - Only if this fails you will need to connect from our Anaconda terminal, we need pem file so place it in your home directory. <img src="{{site.baseurl}}/images/aws_ssh.png" class="img-fluid" alt="AWS SSH"> - Either connection should work at home, school WIFI may be blocking, I have been trying to get this open. A Hot spot or <a href="{{site.baseurl}}/tutorial/vpn">VPN</a> will solve connection errors.</p>
+</blockquote>
+</section>
+<section id="update-upgrade-and-install-packages" class="level3">
+<h3 class="anchored" data-anchor-id="update-upgrade-and-install-packages">Update, Upgrade, and Install packages</h3>
+<p>Terminal commands are shown, these commands will be run from Terminal after you connect to your EC2 instance. It is advised that you try to comprehend and learn these commands as you go through these procedures. Understanding steps is how you become a DevOps Engineer.</p>
+<blockquote class="blockquote">
+<p>These commands update and then upgrade packages in your system.</p>
+</blockquote>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> sudo apt update<span class="kw">;</span> <span class="fu">sudo</span> apt upgrade</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> sudo apt install docker</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> sudo apt install docker-compose <span class="at">-y</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> sudo apt install html2text</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> sudo apt install python3-pip nginx</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> sudo pip3 install virtualenv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="clone-and-change-directory-to-project-location" class="level3">
+<h3 class="anchored" data-anchor-id="clone-and-change-directory-to-project-location">Clone and Change Directory to project location</h3>
+<blockquote class="blockquote">
+<p>This command moves your Web Application code onto you EC2 cloud computer. The example GithUb HTTPs Link is demonstration is: https://github.com/nighthawkcoders/flask_portfolio.git.</p>
+</blockquote>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cd</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> git clone https://github.com/nighthawkcoders/flask_portfolio.git</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cd flask_portfolio</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Clone needs to be repeated for each Web application on the EC2 instance (Team repository and each individual repository). If repo is named the same use option parameter at the end of clone command <code>git clone https://github.com/nighthawkcoders/flask_portfolio.git flask_portfolio_john</code>, then <code>cd flask_portfolio_john</code></li>
+</ul>
+</section>
+<section id="test-web-service" class="level3">
+<h3 class="anchored" data-anchor-id="test-web-service">Test Web Service</h3>
+<blockquote class="blockquote">
+<p>These steps will require you to understand a few new commands that will not be part of final deployment process. However, these commands will help you understand machine dependencies and validate your requirements.txt for completeness.</p>
+</blockquote>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cd ~/flask_portfolio</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> virtualenv <span class="at">-p</span> /usr/bin/python3 webapp</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> source webapp/bin/activate</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> pip install <span class="at">-r</span> requirements.txt</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> python main.py</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Failed result. If you get a result that looks like the below, your requirements.txt needs work. In this instance, I would need to add flask to the requirements.txt.</li>
+</ul>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span><span class="ex">webapp</span><span class="kw">)</span> <span class="ex">ubuntu@ip-172-31-1-138:~/flask_portfolio$</span> python main.py</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Traceback</span> <span class="er">(</span><span class="ex">most</span> recent call last<span class="kw">)</span><span class="bu">:</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="ex">File</span> <span class="st">"main.py"</span>, line 2, in <span class="op">&lt;</span>module<span class="op">&gt;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="ex">from</span> flask import Flask, render_template</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="ex">ModuleNotFoundError:</span> No module named <span class="st">'flask'</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span><span class="ex">webapp</span><span class="kw">)</span> <span class="ex">ubuntu@ip-172-31-1-138:~/flask_portfolio$</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Correct result. A successful result will look like the following. At this point we will type “ctrl+c” and then at prompt “deactivate”, as we will now build and run a Docker File to deploy in more automated fashion.</li>
+</ul>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span><span class="ex">webapp</span><span class="kw">)</span> <span class="ex">ubuntu@ip-172-31-1-138:~/flask_portfolio$</span> python main.py</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a> <span class="ex">*</span> Serving Flask app <span class="st">'main'</span> <span class="er">(</span><span class="ex">lazy</span> loading<span class="kw">)</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a> <span class="ex">*</span> Environment: production</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>   <span class="ex">WARNING:</span> This is a development server. Do not use it in a production deployment.</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>   <span class="ex">Use</span> a production WSGI server instead.</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a> <span class="ex">*</span> Debug mode: on</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a> <span class="ex">*</span> Running on http://127.0.0.1:5000 <span class="er">(</span><span class="ex">Press</span> CTRL+C to quit<span class="kw">)</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a> <span class="ex">*</span> Restarting with stat</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a> <span class="ex">*</span> Debugger is active!</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a> <span class="ex">*</span> Debugger PIN: 710-199-540</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="create-dockerfile-to-run-web-service" class="level3">
+<h3 class="anchored" data-anchor-id="create-dockerfile-to-run-web-service">Create Dockerfile to run Web Service</h3>
+<blockquote class="blockquote">
+<p>A Dockerfile is a configuration used to run the Web Service. This is placed in a file called Dockerfile. It is best to add this to VS Code and pull it, or you can update in place with nano, vi, or vim editor and use command line commands to push it into your repository. The Dockerfile should be considered Code!</p>
+</blockquote>
+<ul>
+<li>Edit the Dockerfile</li>
+</ul>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> sudo nano Dockerfile</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Insert the Dockerfile commands, note that they are similar to Bash commands performed earlier. Follow prompts on screen to save file when complete, look for Key/Value (GitHub HTTPS link) that requires change for your project.</li>
+</ul>
+<div class="sourceCode" id="cb7"><pre class="sourceCode dockerfile code-with-copy"><code class="sourceCode dockerfile"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> docker.io/python:3.9</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">WORKDIR</span> /app</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Update environment and install python and pip ---</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="ex">apt-get</span> update <span class="kw">&amp;&amp;</span> <span class="ex">apt-get</span> upgrade <span class="at">-y</span> <span class="kw">&amp;&amp;</span> <span class="dt">\</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="ex">apt-get</span> install <span class="at">-y</span> python3 python3-pip git</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Copy repo you updated with clone or pull ---</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> . /app</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Install project specific dependencies ---</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="ex">pip3</span> install <span class="at">--no-cache-dir</span> <span class="at">-r</span> requirements.txt</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="ex">pip3</span> install gunicorn</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Setup args to run 3 workers and run on port 8080 ---</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="kw">ENV</span> GUNICORN_CMD_ARGS=<span class="st">"--workers=3 --bind=0.0.0.0:8080"</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Allow port 8080 to be accessed by system ---</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="kw">EXPOSE</span> 8080</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Run Web Application in production style ---</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="kw">CMD</span> [ <span class="st">"gunicorn"</span>, <span class="st">"main:app"</span> ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="create-docker-compose-file-share-web-service" class="level3">
+<h3 class="anchored" data-anchor-id="create-docker-compose-file-share-web-service">Create docker-compose file share Web Service</h3>
+<blockquote class="blockquote">
+<p>A docker-compose file is a configuration used to share your Docker Web Service and resources with the Linux system. This file enable Linux to have access to the container and the persistent data application via the /volumes location.<br>
+- Once again it is best to add the docker-compose.yml in VS Code and pull it. You can edit it on the machine itself using vi, vim, or nano. - The <code>image:</code> needs to have unique name for each application on server (ie flask_john_v1) - The <code>ports:</code> left value 8086 needs to be unique for each application on server (ie 8087:8080, 8088:8080, etc) - Change <code>device:</code> to match path to volumes directory of your project. Verify this location is correct typing <code>ls /home/ubuntu/flask_portfolio/volumes</code> this should list files <code>sqlite.db  uploads</code></p>
+</blockquote>
+<ul>
+<li>Edit docker-compose.yml</li>
+</ul>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> sudo nano docker-compose.yml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Insert the docker-compose.yml Keys/Values.</li>
+</ul>
+<div class="sourceCode" id="cb9"><pre class="sourceCode yml code-with-copy"><code class="sourceCode yaml"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">version</span><span class="kw">:</span><span class="at"> </span><span class="st">'3'</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">services</span><span class="kw">:</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">web</span><span class="kw">:</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">image</span><span class="kw">:</span><span class="at"> flask_port_v1</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">build</span><span class="kw">:</span><span class="at"> .</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">ports</span><span class="kw">:</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="at">                        </span><span class="kw">-</span><span class="at"> </span><span class="st">"8086:8080"</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">volumes</span><span class="kw">:</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="at">                        </span><span class="kw">-</span><span class="at"> persistent_volume:/app/volumes</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="fu">volumes</span><span class="kw">:</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">persistent_volume</span><span class="kw">:</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">driver</span><span class="kw">:</span><span class="at"> local</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">driver_opts</span><span class="kw">:</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">o</span><span class="kw">:</span><span class="at"> bind</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">type</span><span class="kw">:</span><span class="at"> none</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">device</span><span class="kw">:</span><span class="at"> /home/ubuntu/flask_portfolio/volumes</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="co">      # replace just flask_portfolio</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="running-docker-using-docker-compose.yml" class="level3">
+<h3 class="anchored" data-anchor-id="running-docker-using-docker-compose.yml">Running Docker using docker-compose.yml</h3>
+<blockquote class="blockquote">
+<p>At this point, it is best to review complete files on GitHub and for Docker and docker-compose: https://github.com/nighthawkcoders/flask_portfolio. Review the Key/Values mentioned in this document. Make sure your Docker and docker-compose files a personalized to your project.</p>
+</blockquote>
+<ul>
+<li>Ensure install of docker, docker-compose installed from earlier procedures</li>
+</ul>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> sudo apt install docker</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> sudo apt install docker-compose <span class="at">-y</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Make sure you are in project directory</li>
+</ul>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cd ~/flask_portfolio/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Run docker-compose</li>
+</ul>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> sudo docker-compose up <span class="at">-d</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Output from docker-compose. When running this command, docker-compose will run all the Docker steps and build a Web Application running in a Docker container, a virtual environment.</li>
+</ul>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Creating</span> network <span class="st">"flask_portfolio_default"</span> with the default driver</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Building</span> web</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Step</span> 1/9 : FROM docker.io/python:3.9</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a> <span class="ex">---</span><span class="op">&gt;</span> d0ce03c9330c</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="ex">Step</span> 2/9 : WORKDIR /app</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="ex">....</span> LOTS of STEPs and OUTPUT ...</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="ex">Successfully</span> built 68d68ad9699b</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="ex">Successfully</span> tagged flask_port_v1:latest</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="ex">WARNING:</span> Image for service web was built because it did not already exist. To rebuild this image you must use <span class="kw">`</span><span class="ex">docker-compose</span> build<span class="kw">`</span> or <span class="kw">`</span><span class="ex">docker-compose</span> up <span class="at">--build</span><span class="kw">`</span>.</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="ex">Creating</span> flask_portfolio_web_1 ... done</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="verifying-web-application-via-docker-commands" class="level3">
+<h3 class="anchored" data-anchor-id="verifying-web-application-via-docker-commands">Verifying Web Application via Docker commands</h3>
+<blockquote class="blockquote">
+<p>Here is a look at some of the commands behind the scenes. None of these are required to get things working, but show the results of the Docker and docker-compose.yml files and commands.</p>
+</blockquote>
+<ul>
+<li>docker-compose ps View the running Web process, “ps” is a linux command or option that provides information related to the processes on a system. Look at name and ports in relation to outputs of the docker-compose process and settings in docker-compose.yml file.</li>
+</ul>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> sudo docker-compose ps</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>        <span class="ex">Name</span>                 Command        State                    Ports                  </span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="ex">--------------------------------------------------------------------------------------------</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="ex">flask_portfolio_web_1</span>   gunicorn main:app   Up      0.0.0.0:8086-<span class="op">&gt;</span>8080/tcp,:::8086-<span class="op">&gt;</span>8080/tcp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>docker ps View a more comprehensive list of all the docker processes on the system. In this process reports, many of the alternate projects running on this AWS server are show (ie your Team Members). You should be able to identify your IMAGE and PORTS, as they should be unique according to your docker-compose.yml file.</li>
+</ul>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> sudo docker ps</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="ex">CONTAINER</span> ID   IMAGE           COMMAND                  CREATED          STATUS          PORTS                                       NAMES</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="ex">749a93bc11ce</span>   flask_port_v1   <span class="st">"gunicorn main:app"</span>      45 minutes ago   Up 45 minutes   0.0.0.0:8086-<span class="op">&gt;</span>8080/tcp, :::8086-<span class="op">&gt;</span>8080/tcp   flask_portfolio_web_1</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="ex">89155782b853</span>   java_springv1   <span class="st">"java -jar target/sp…"</span>   6 days ago       Up 6 days       0.0.0.0:8085-<span class="op">&gt;</span>8080/tcp, :::8085-<span class="op">&gt;</span>8080/tcp   spring_portfolio_web_1</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="ex">9415d6397d2e</span>   python_cspv1    <span class="st">"gunicorn main:app"</span>      2 weeks ago      Up 2 weeks      0.0.0.0:8082-<span class="op">&gt;</span>8080/tcp, :::8082-<span class="op">&gt;</span>8080/tcp   nighthawk_csp_web_1</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="ex">4bf324458bf6</span>   python_laxv1    <span class="st">"gunicorn main:app"</span>      5 weeks ago      Up 5 weeks      0.0.0.0:8084-<span class="op">&gt;</span>8080/tcp, :::8084-<span class="op">&gt;</span>8080/tcp   lax_web_1</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="ex">7a6dff6425e9</span>   python_ctev1    <span class="st">"gunicorn main:app"</span>      5 weeks ago      Up 5 weeks      0.0.0.0:8083-<span class="op">&gt;</span>8080/tcp, :::8083-<span class="op">&gt;</span>8080/tcp   cte_web_1</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="ex">abd77b8e77af</span>   java_csav2      <span class="st">"java -jar target/cs…"</span>   5 weeks ago      Up 5 weeks      0.0.0.0:8081-<span class="op">&gt;</span>8080/tcp, :::8081-<span class="op">&gt;</span>8080/tcp   nighthawk_csa_web_1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>docker images This lists all of the docker images, or containers, that are used to serve the process shown above. The flask_port_v1 is the REPOSITORY is named in docker-compose.yml. The IMAGE ID is container for the running Web application.</li>
+</ul>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> sudo docker images</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="ex">REPOSITORY</span>      TAG             IMAGE ID       CREATED          SIZE</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="ex">flask_port_v1</span>   latest          68d68ad9699b   51 minutes ago   1.01GB</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="ex">java_springv1</span>   latest          e85a584b1836   6 days ago       523MB</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="ex">python_laxv1</span>    latest          713c84a30d3b   5 weeks ago      1.16GB</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="ex">python_ctev1</span>    latest          1608eaee06c7   5 weeks ago      1.18GB</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="ex">python_cspv1</span>    latest          b9bb27be863b   5 weeks ago      1.12GB</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="ex">java_csav2</span>      latest          4055a9fd5ea7   5 weeks ago      570MB</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span>          3.9             d0ce03c9330c   7 weeks ago      915MB</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="ex">alpine</span>          latest          e66264b98777   8 weeks ago      5.53MB</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="ex">openjdk</span>         16-alpine3.13   2aa8569968b8   17 months ago    324MB</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>docker volume ls This list volume names are the locations where application stores files that that the developer wants to keep. The volume name is specified in the docker-compose.yml file.</li>
+</ul>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> sudo docker volume ls</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="ex">DRIVER</span>    VOLUME NAME</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="bu">local</span>     <span class="va">flask_portfolio_persistent_volume</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="bu">local</span>     <span class="va">nighthawk_csa_persistent_volume</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="bu">local</span>     <span class="va">nighthawk_csp_persistent_volume</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="bu">local</span>     <span class="va">spring_portfolio_persistent_volume</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="testing-localhost-endpoint" class="level3">
+<h3 class="anchored" data-anchor-id="testing-localhost-endpoint">Testing localhost endpoint</h3>
+<p>Verify everything is working with your docker configurations.</p>
+<ul>
+<li>Local Test of Web Application Endpoint. This should return HTML related to the home page of your Web site. If this fails, you need to review Docker and docker-compose configurations. <code>Failed to connect</code> means you need to review your port assignments in docker-compose.yml and the <code>docker-compose ps</code> outputs above.</li>
+</ul>
+<div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> curl http://localhost:8086</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>More readable view of Web Application Endpoint. This requires <code>sudo apt install html2text</code>. This output is a form of Web Scrapping, as it pull text out of the HTML and makes it easier for us to read and identify the content.</li>
+</ul>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> curl http://localhost:8086 <span class="kw">|</span> <span class="ex">html2text</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Congrats. If you are to this point you are successfully running your Web Application with Docker and verifying that it is running with Curl.</li>
+</ul>
+</section>
+</section>
+<section id="test-preparation-for-docker-web-application-using-ip-for-internet-access" class="level2">
+<h2 class="anchored" data-anchor-id="test-preparation-for-docker-web-application-using-ip-for-internet-access">Test preparation for Docker Web Application using IP for Internet Access</h2>
+<p>Each student scrum team will perform Nginx test and verify Group Web Project is working on EC2 instance. This step is can only support a single Web Application at a time.</p>
+<p>This Step is dependent on… - EC2 Public IPs: 3.233.212.71 - Docker Port: 8086</p>
+<p>Enable Nginx to retrieve default Web Application using IP Address from internet request (Reverse Proxy)!</p>
+<ul>
+<li>Install Nginx on Ubuntu servers</li>
+</ul>
+<div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> sudo apt install nginx</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Go to location of Nginx server configuration files</li>
+</ul>
+<div class="sourceCode" id="cb21"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cd /etc/nginx/sites-available</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Open editor to Create your own “Nginx test configuration”.<br>
+</li>
+</ul>
+<div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> sudo nano test</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Edit your own Nginx server configuration making modifications to:
+<ul>
+<li>IP Address: 3.233.212.71</li>
+<li>docker-compose, proxy pass Port: 8086</li>
+</ul></li>
+</ul>
+<pre class="nginx"><code>server {
+    listen 80;
+    listen [::]:80;
+    server_name 3.233.212.71;
+
+    location / {
+        proxy_pass http://localhost:8086;
+        # Simple requests
+        if ($request_method ~* "(GET|POST)") {
+                add_header "Access-Control-Allow-Origin"  *;
+        }
+
+        # Preflight requests
+        if ($request_method = OPTIONS ) {
+                add_header "Access-Control-Allow-Origin"  *;
+                add_header "Access-Control-Allow-Methods" "GET, POST, OPTIONS, HEAD";
+                add_header "Access-Control-Allow-Headers" "Authorization, Origin, X-Requested-With, Content-Type, Accept";
+                return 200;
+        }
+    }
+}</code></pre>
+<section id="activating-nginx-configuration" class="level3">
+<h3 class="anchored" data-anchor-id="activating-nginx-configuration">Activating Nginx configuration</h3>
+<ul>
+<li>Activate/enabled Nginx server configuration:
+<ul>
+<li>nginx configuration file: test</li>
+</ul>
+<div class="sourceCode" id="cb24"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> sudo ln <span class="at">-s</span> /etc/nginx/sites-available/test /etc/nginx/sites-enabled</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> sudo nginx <span class="at">-t</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li>If there are errors, something is wrong…
+<ul>
+<li>Perhaps you are missing semicolon at the end of server)name or proxy_pass lines.</li>
+<li>Perhaps link to file in sites-enabled is bad as a result of bad syntax in <code>ln -a</code> command.
+<ul>
+<li>There are two directories <code>/etc/nginx/sites-available</code> and <code>/etc/nginx/sites-enabled</code>.<br>
+</li>
+<li>The 1st is for preliminary editing, the second is for activation. Perform <code>ls</code> in <code>/etc/nginx/sites-enabled</code> and make sure all the names look correct.<br>
+</li>
+<li>Correct by <code>rm</code> of mistake in <code>/etc/nginx/sites-enabled</code> without deleting original file in <code>/etc/nginx/sites-available</code>. Then repeat <code>ln -s</code> command.</li>
+</ul></li>
+</ul></li>
+<li>If there are no errors, restart NGINX so the server to activate <code>/etc/nginx/sites-enabled</code> files:</li>
+</ul>
+<div class="sourceCode" id="cb25"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> sudo systemctl restart nginx</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="testing-http-endpoint" class="level3">
+<h3 class="anchored" data-anchor-id="testing-http-endpoint">Testing HTTP endpoint</h3>
+<blockquote class="blockquote">
+<p>When completing this section, you will show that the Internet is resolving your Web application and port from an IP address (aka reverse proxy).</p>
+</blockquote>
+<ul>
+<li>Verify AWS Web application again. Make sure curl is still working on local machine. Make sure endpoint you placed in Nginx test file match.</li>
+</ul>
+<div class="sourceCode" id="cb26"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> curl http://localhost:8086</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Now test public IP on the internet. Go to a browser anywhere in the world and type your IP address:</li>
+</ul>
+<pre><code>http://3.233.212.71</code></pre>
+<ul>
+<li>Note. Address is Unsecure and you are using IP address versus Domain.</li>
+<li>Timeout problem. This means something is wrong with EC2 Public IP.</li>
+<li>Nginx Default page. This means Nginx is working, but something is wrong with you Nginx test configuration.</li>
+<li>Broken Gateway. This means Nginx is working, but something is wrong with Web Application endpoint on machine. This requires you to look at port configuration OR restart Docker.</li>
+</ul>
+<blockquote class="blockquote">
+<p>Congratulations. If you have arrived at this point you now have capability to access your team Web Application from the Internet. Hurray!!!</p>
+</blockquote>
+</section>
+</section>
+<section id="final-preparation-the-docker-web-application-using-dns-for-internet-access" class="level2">
+<h2 class="anchored" data-anchor-id="final-preparation-the-docker-web-application-using-dns-for-internet-access">Final preparation the Docker Web Application using DNS for Internet Access</h2>
+<p>There are additional steps to this preparation. We need to direct the internet to the AWS server running the Web Application, this is done using Domain Name Service (DNS). After being directed to the Web Server, the server needs to respond to the HTTP (Hyper Text Transfer Protocol) request. The proxy of HTTP to your Web Application is manged by Nginx. Finally, we will Secure HTTP (HTTPS), with a utility called Certbot. ### DNS provider and setup Each student scrum team is required to learn how to obtain a DNS provider and setup an independent domain.</p>
+<p>A picture is included to show key elements in setting up a domain with a DNS provider. The nighthawkcodingsociety.com is using Freenom as its service provider. As you build your own DNS endpoint, you will need to obtain your own IP address mapped to a Domain.</p>
+<p>This Freenom illustration is dependent on… - DNS Name: nighthawkcodingsociety.com - DNS Subdomain name(s): battleship.nighthawkcodingsociety.com. cowboys.nighthawkcodingsociety.com</p>
+<p>A minimum configuration will have the two “A” type definitions using you Public IP address. These two are resolved with a single Web Application. The “CNAME” type is used for subdomains, these will resolve to a different Web Application.</p>
+<p>Setup DNS mapping to your Public IP address now!!! This is needed to complete Nginx and Certbot configurations below. You will not be able to proceed until you have setup ‘A’ record.</p>
+<p><img alt="Setup a Domain" src="{{site.baseurl}}/images/freenom.png" title="DNS Provider"></p>
+<ul>
+<li>Open editor to Create your own “Nginx Web Application configuration” for your group project. This looks very similar to test configurations, but the change is the Domain names. These Domain names must be created through DNS provider and you must setup ‘A’ entries in DNS for them to work. For clarity, the name <code>nighthawk</code> should reflect your application name, domain or subdomain. The name needs to be unique for each web application (ie john_nighthawk for john.nighthawk.com).</li>
+</ul>
+<div class="sourceCode" id="cb28"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> sudo nano nighthawk</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Edit your own Nginx server configuration making modifications:
+<ul>
+<li>DNS Name(s): nighthawkcodingsociety.com www.nighthawkcodingsociety.com</li>
+<li>docker-compose, proxy pass Port: 8086</li>
+</ul></li>
+</ul>
+<pre class="nginx"><code>server {
+    listen 80;
+    listen [::]:80;
+    server_name nighthawkcodingsociety.com www.nighthawkcodingsociety.com;
+
+    location / {
+        proxy_pass http://localhost:8086;
+        # Simple requests
+        if ($request_method ~* "(GET|POST)") {
+                add_header "Access-Control-Allow-Origin"  *;
+        }
+
+        # Preflight requests
+        if ($request_method = OPTIONS ) {
+                add_header "Access-Control-Allow-Origin"  *;
+                add_header "Access-Control-Allow-Methods" "GET, POST, OPTIONS, HEAD";
+                add_header "Access-Control-Allow-Headers" "Authorization, Origin, X-Requested-With, Content-Type, Accept";
+                return 200;
+        }
+    }
+}</code></pre>
+<ul>
+<li>Or, or in addition, edit your own Nginx server configuration making modifications to <mark>subdomain</mark> file (0 to many). These Domain names must be created through DNS provider and you must setup ‘A’ or ‘CNAME’ entries in DNS for them to work:
+<ul>
+<li>DNS Name(s): flask.nighthawkcodingsociety.com</li>
+<li>docker-compose, proxy pass Port: 8087</li>
+</ul></li>
+</ul>
+<pre class="nginx"><code>server {
+    listen 80;
+    listen [::]:80;
+    server_name flask.nighthawkcodingsociety.com;
+
+    location / {
+        proxy_pass http://localhost:8087;
+        # Simple requests
+        if ($request_method ~* "(GET|POST)") {
+                add_header "Access-Control-Allow-Origin"  *;
+        }
+
+        # Preflight requests
+        if ($request_method = OPTIONS ) {
+                add_header "Access-Control-Allow-Origin"  *;
+                add_header "Access-Control-Allow-Methods" "GET, POST, OPTIONS, HEAD";
+                add_header "Access-Control-Allow-Headers" "Authorization, Origin, X-Requested-With, Content-Type, Accept";
+                return 200;
+        }
+    }
+}</code></pre>
+<ul>
+<li>Activate/enabled Nginx server configuration:
+<ul>
+<li>nginx configuration file: nighthawk</li>
+</ul>
+<div class="sourceCode" id="cb31"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> sudo ln <span class="at">-s</span> /etc/nginx/sites-available/nighthawk /etc/nginx/sites-enabled</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> sudo nginx <span class="at">-t</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li>If there are no errors, restart NGINX so the server is an endpoint to the internet:</li>
+</ul>
+<div class="sourceCode" id="cb32"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> sudo systemctl restart nginx</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="testing-http-endpoint-1" class="level3">
+<h3 class="anchored" data-anchor-id="testing-http-endpoint-1">Testing HTTP endpoint</h3>
+<p>Before finishing, this is a good opportunity to review everything you have done.</p>
+<ul>
+<li>Make sure curl is still working on local machine.</li>
+</ul>
+<div class="sourceCode" id="cb33"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> curl http://localhost:8086</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> curl http://localhost:8087</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="ex">etc</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Now test unsecure HTTP endpoint on the internet. Go to a browser anywhere and type your DNS domain: <code>http://nighthawkcodingsociety.com</code> or <code>http://flask.nighthawkcodingsociety.com</code>.
+<ul>
+<li>Timeout. This means something is wrong with EC2 Public IP.</li>
+<li>Nginx Default page. This means DNS is working, but something is wrong with you Nginx configuration.</li>
+<li>Broken Gateway. This means Nginx is working, but something is wrong with Web Application endpoint on machine, if this fails something is wrong with Web Application. This requires you to look at Docker and docker-compose configuration.</li>
+</ul></li>
+</ul>
+</section>
+<section id="certbot-install-and-configuration" class="level3">
+<h3 class="anchored" data-anchor-id="certbot-install-and-configuration">Certbot install and configuration</h3>
+<p>Each student scrum team will learn Certbot on on AWS EC2 test server, establish working https web application. The final configuration will be on AWS server managed by Teachers or Student DevOps Engineers.</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> sudo snap install core<span class="kw">;</span> <span class="fu">sudo</span> snap refresh core</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> sudo snap install <span class="at">--classic</span> certbot</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> sudo ln <span class="at">-s</span> /snap/bin/certbot /usr/bin/certbot</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> sudo certbot <span class="at">--nginx</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>Saving debug log to /var/log/letsencrypt/letsencrypt.log
+Plugins selected: Authenticator nginx, Installer nginx
+
+Which names would you like to activate HTTPS for?
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+1: nighthawkcodingsociety.com
+2: csa.nighthawkcodingsociety.com
+3: csp.nighthawkcodingsociety.com
+4: flm.nighthawkcodingsociety.com
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Select the appropriate numbers separated by commas and/or spaces, or leave input
+blank to select all options shown (Enter 'c' to cancel):    
+Cert not yet due for renewal
+
+You have an existing certificate that has exactly the same domains or certificate name you requested and isn't close to expiry.
+(ref: /etc/letsencrypt/renewal/nighthawkcodingsociety.com-0001.conf)
+
+What would you like to do?
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+1: Attempt to reinstall this existing certificate
+2: Renew &amp; replace the cert (limit ~5 per 7 days)
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Select the appropriate number [1-2] then [enter] (press 'c' to cancel): 2
+Renewing an existing certificate
+Performing the following challenges:
+http-01 challenge for nighthawkcodingsociety.com
+http-01 challenge for csa.nighthawkcodingsociety.com
+http-01 challenge for cso.nighthawkcodingsociety.com
+http-01 challenge for flm.nighthawkcodingsociety.com
+Waiting for verification...
+Cleaning up challenges
+Deploying Certificate to VirtualHost /etc/nginx/sites-enabled/nighthawk_society
+Deploying Certificate to VirtualHost /etc/nginx/sites-enabled/nighthawk_csa
+Deploying Certificate to VirtualHost /etc/nginx/sites-enabled/nighthawk_csp
+Deploying Certificate to VirtualHost /etc/nginx/sites-enabled/nighthawk_flm
+
+Please choose whether or not to redirect HTTP traffic to HTTPS, removing HTTP access.
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+1: No redirect - Make no further changes to the webserver configuration.
+2: Redirect - Make all requests redirect to secure HTTPS access. Choose this for
+new sites, or if you're confident your site works on HTTPS. You can undo this
+change by editing your web server's configuration.
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Select the appropriate number [1-2] then [enter] (press 'c' to cancel): 2
+Traffic on port 80 already redirecting to ssl in /etc/nginx/sites-enabled/nighthawk_society
+Traffic on port 80 already redirecting to ssl in /etc/nginx/sites-enabled/nighthawk_csa
+Traffic on port 80 already redirecting to ssl in /etc/nginx/sites-enabled/nighthawk_csp
+Traffic on port 80 already redirecting to ssl in /etc/nginx/sites-enabled/nighthawk_flm
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Your existing certificate has been successfully renewed, and the new certificate
+has been installed.
+
+The new certificate covers the following domains:
+https://nighthawkcodingsociety.com, 
+https://csa.nighthawkcodingsociety.com, 
+https://csp.nighthawkcodingsociety.com, and
+https://flm.nighthawkcodingsociety.com,
+
+You should test your configuration at:
+https://www.ssllabs.com/ssltest/analyze.html?d=nighthawkcodingsociety.com
+https://www.ssllabs.com/ssltest/analyze.html?d=csa.nighthawkcodingsociety.com
+https://www.ssllabs.com/ssltest/analyze.html?d=csp.nighthawkcodingsociety.com
+https://www.ssllabs.com/ssltest/analyze.html?d=flm.nighthawkcodingsociety.com
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+IMPORTANT NOTES:
+ - Congratulations! Your certificate and chain have been saved at:
+   /etc/letsencrypt/live/nighthawkcodingsociety.com-0001/fullchain.pem
+   Your key file has been saved at:
+   /etc/letsencrypt/live/nighthawkcodingsociety.com-0001/privkey.pem
+   Your cert will expire on 2022-03-06. To obtain a new or tweaked
+   version of this certificate in the future, simply run certbot again
+   with the "certonly" option. To non-interactively renew *all* of
+   your certificates, run "certbot renew"
+ - If you like Certbot, please consider supporting our work by:
+
+   Donating to ISRG / Let's Encrypt:   https://letsencrypt.org/donate
+   Donating to EFF:                    https://eff.org/donate-le</code></pre>
+</section>
+</section>
+<section id="update-deployment-this-process-is-after-you-change-code" class="level2">
+<h2 class="anchored" data-anchor-id="update-deployment-this-process-is-after-you-change-code">Update Deployment, this process is after you change code</h2>
+<blockquote class="blockquote">
+<p>This procedure is a very short, as much of the deployment performed is persistent on your EC2/Ubuntu.</p>
+</blockquote>
+<section id="goto-project-directory" class="level3">
+<h3 class="anchored" data-anchor-id="goto-project-directory">Goto Project directory</h3>
+<blockquote class="blockquote">
+<p>Check your docker processes. Make sure git has nothing to commit.</p>
+</blockquote>
+<div class="sourceCode" id="cb36"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cd ~/flask_portfolio</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> sudo docker-compose ps</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>       <span class="ex">Name</span>                 Command        State                    Ports                  </span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="ex">--------------------------------------------------------------------------------------------</span></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="ex">flask_portfolio_web_1</span>   gunicorn main:app   Up      0.0.0.0:8086-<span class="op">&gt;</span>8080/tcp,:::8086-<span class="op">&gt;</span>8080/tcp</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> sudo docker ps</span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a><span class="ex">CONTAINER</span> ID   IMAGE           COMMAND                  CREATED        STATUS        PORTS                                       NAMES</span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a><span class="ex">ee3fd0edfdcd</span>   flask_port_v1   <span class="st">"gunicorn main:app"</span>      6 weeks ago    Up 6 weeks    0.0.0.0:8086-<span class="op">&gt;</span>8080/tcp, :::8086-<span class="op">&gt;</span>8080/tcp   flask_portfolio_web_1</span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> git status</span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a><span class="ex">On</span> branch main</span>
+<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a><span class="ex">Your</span> branch is up to date with <span class="st">'origin/main'</span>.</span>
+<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a><span class="ex">nothing</span> to commit, working tree clean</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="shutdown-process-and-update-source" class="level3">
+<h3 class="anchored" data-anchor-id="shutdown-process-and-update-source">Shutdown process and update source</h3>
+<blockquote class="blockquote">
+<p>Stop docker processes and git pull</p>
+</blockquote>
+<div class="sourceCode" id="cb37"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> sudo docker-compose kill  <span class="co"># run ps on docker-compose and docker and you should observe changes</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Killing</span> flask_portfolio_web_1 ... done</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<blockquote class="blockquote">
+<p>At this point your server is down, look at it from browser</p>
+</blockquote>
+<pre><code>502 Bad Gateway</code></pre>
+<blockquote class="blockquote">
+<p>Update code</p>
+</blockquote>
+<div class="sourceCode" id="cb39"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> git pull    <span class="co"># dialog will look as follows</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span> Enumerating objects: 42, done.</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span> Counting objects: 100% <span class="er">(</span><span class="ex">42/42</span><span class="kw">)</span><span class="ex">,</span> done.</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span> Compressing objects: 100% <span class="er">(</span><span class="ex">23/23</span><span class="kw">)</span><span class="ex">,</span> done.</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span> Total 33 <span class="er">(</span><span class="ex">delta</span> 17<span class="kw">)</span><span class="ex">,</span> reused 24 <span class="er">(</span><span class="ex">delta</span> 9<span class="kw">)</span><span class="ex">,</span> pack-reused 0</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a><span class="ex">Unpacking</span> objects: 100% <span class="er">(</span><span class="ex">33/33</span><span class="kw">)</span><span class="ex">,</span> 7.42 KiB <span class="kw">|</span> <span class="ex">474.00</span> KiB/s, done.</span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a><span class="ex">From</span> https://github.com/nighthawkcoders/flask_portfolio</span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>   <span class="ex">f0b6ba1..def0da9</span>  main       <span class="at">-</span><span class="op">&gt;</span> origin/main</span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a><span class="ex">...</span> These are the files you changed ...</span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a><span class="ex">model_jokes.py</span>                                 <span class="kw">|</span>   <span class="ex">4</span> ++--</span>
+<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a><span class="ex">requirements.txt</span>                               <span class="kw">|</span>   <span class="ex">8</span> ++++----</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="rebuild-and-restart-web-application" class="level3">
+<h3 class="anchored" data-anchor-id="rebuild-and-restart-web-application">Rebuild and Restart Web Application</h3>
+<blockquote class="blockquote">
+<p>Force rebuild of docker container. This can take a couple of minutes.</p>
+</blockquote>
+<div class="sourceCode" id="cb40"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> sudo docker-compose build <span class="at">--no-cache</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Building</span> web</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Step</span> 1/9 : FROM docker.io/python:3.9</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a> <span class="ex">---</span><span class="op">&gt;</span> d0ce03c9330c</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="ex">Step</span> 2/9 : WORKDIR /app</span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a> <span class="ex">---</span><span class="op">&gt;</span> Running in 3f705fefc681</span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a><span class="ex">Removing</span> intermediate container 3f705fefc681</span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a> <span class="ex">---</span><span class="op">&gt;</span> 9c6ebd23dcb1</span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a><span class="ex">...</span> Build steps 1 through 9 ...</span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a><span class="ex">Step</span> 9/9 : CMD [ <span class="st">"gunicorn"</span>, <span class="st">"main:app"</span> ]</span>
+<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a> <span class="ex">---</span><span class="op">&gt;</span> Running in 9ca595a79669</span>
+<span id="cb40-14"><a href="#cb40-14" aria-hidden="true" tabindex="-1"></a><span class="ex">Removing</span> intermediate container 9ca595a79669</span>
+<span id="cb40-15"><a href="#cb40-15" aria-hidden="true" tabindex="-1"></a> <span class="ex">---</span><span class="op">&gt;</span> 54ca7ab064b4</span>
+<span id="cb40-16"><a href="#cb40-16" aria-hidden="true" tabindex="-1"></a><span class="ex">Successfully</span> built 54ca7ab064b4</span>
+<span id="cb40-17"><a href="#cb40-17" aria-hidden="true" tabindex="-1"></a><span class="ex">Successfully</span> tagged flask_port_v1:latest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<blockquote class="blockquote">
+<p>Run docker-compose</p>
+</blockquote>
+<div class="sourceCode" id="cb41"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> sudo docker-compose up <span class="at">-d</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Recreating</span> flask_portfolio_web_1 ... done</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<blockquote class="blockquote">
+<p>Now server is up, test in Browser for recent change</p>
+</blockquote>
+<pre><code>Python Home Page</code></pre>
+</section>
+</section>
+<section id="good-examples" class="level2">
+<h2 class="anchored" data-anchor-id="good-examples">Good Examples</h2>
+<blockquote class="blockquote">
+<p>git clone Plan what your name will be on shared server and this can be different than repo name by using 4th argument.</p>
+</blockquote>
+<div class="sourceCode" id="cb43"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone <span class="op">&lt;</span>git_project<span class="op">&gt;</span> avaflaskproject  <span class="co"># identifiable name </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="docker-compose.yml-sudo-docker-compose-up--d" class="level3">
+<h3 class="anchored" data-anchor-id="docker-compose.yml-sudo-docker-compose-up--d">docker-compose.yml (sudo docker-compose up -d)</h3>
+<blockquote class="blockquote">
+<p>docker-compose.yml Setup before you clone, this needs to be versioned controlled. There are 3 edits!</p>
+</blockquote>
+<div class="sourceCode" id="cb44"><pre class="sourceCode yml code-with-copy"><code class="sourceCode yaml"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">services</span><span class="kw">:</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">web</span><span class="kw">:</span></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">image</span><span class="kw">:</span><span class="at"> flask_ava_v1</span><span class="co">  # identifiable name for shared machine</span></span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">build</span><span class="kw">:</span><span class="at"> .</span></span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">ports</span><span class="kw">:</span></span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a><span class="at">                        </span><span class="kw">-</span><span class="at"> </span><span class="st">"8089:8080"</span><span class="co"> # port distinct from others</span></span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">volumes</span><span class="kw">:</span></span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a><span class="at">                        </span><span class="kw">-</span><span class="at"> persistent_volume:/app/volumes</span></span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a><span class="fu">volumes</span><span class="kw">:</span></span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">persistent_volume</span><span class="kw">:</span></span>
+<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">driver</span><span class="kw">:</span><span class="at"> local</span></span>
+<span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">driver_opts</span><span class="kw">:</span></span>
+<span id="cb44-13"><a href="#cb44-13" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">o</span><span class="kw">:</span><span class="at"> bind</span></span>
+<span id="cb44-14"><a href="#cb44-14" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">type</span><span class="kw">:</span><span class="at"> none</span></span>
+<span id="cb44-15"><a href="#cb44-15" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">device</span><span class="kw">:</span><span class="at"> /home/ubuntu/avaflaskproject/volumes</span><span class="co">  # name consistent with repo</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="docker-ps" class="level3">
+<h3 class="anchored" data-anchor-id="docker-ps">Docker PS</h3>
+<blockquote class="blockquote">
+<p>sudo docker ps Verification shows practice of easy to identify owners and ports. At this point it is very clear to see who owns Ports.</p>
+</blockquote>
+<div class="sourceCode" id="cb45"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="ex">CONTAINER</span> ID   IMAGE              COMMAND               CREATED        STATUS        PORTS                                       NAMES</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="ex">6f4572c00f22</span>   flask_shruthi_v1   <span class="st">"gunicorn main:app"</span>   3 hours ago    Up 3 hours    0.0.0.0:8083-<span class="op">&gt;</span>8080/tcp, :::8083-<span class="op">&gt;</span>8080/tcp   flaskpython_web_1</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a><span class="ex">0dd6254cf662</span>   flask_ava_v1       <span class="st">"gunicorn main:app"</span>   17 hours ago   Up 17 hours   0.0.0.0:8089-<span class="op">&gt;</span>8080/tcp, :::8089-<span class="op">&gt;</span>8080/tcp   avaflaskproject_web_1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="nginx-ip-test-file-sudo-systemctl-nginx-restart" class="level3">
+<h3 class="anchored" data-anchor-id="nginx-ip-test-file-sudo-systemctl-nginx-restart">Nginx IP test file (sudo systemctl nginx restart)</h3>
+<blockquote class="blockquote">
+<p>nginx IP address test file There are 2 edits. Notice the Public IP address on screen. Identify that with configuration. Also, what application will run on the IP address?</p>
+</blockquote>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="{{site.baseurl}}/images/nginx_test.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">nginx test</figcaption><p></p>
+</figure>
+</div>
+</section>
+<section id="nginx-sites-available-cd-etcnginxsites-available" class="level3">
+<h3 class="anchored" data-anchor-id="nginx-sites-available-cd-etcnginxsites-available">Nginx sites-available (cd /etc/nginx/sites-available)</h3>
+<blockquote class="blockquote">
+<p>available directory names Notice names and how they can be identified. This is were you work on configurations.</p>
+</blockquote>
+<div class="sourceCode" id="cb46"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="ex">ubuntu@ip-172-31-18-94:/etc/nginx/sites-available$</span> ls</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="ex">ava_nighthawk</span>  default  shruthi_nighthawk  test</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="nginx-file-published-to-work-with-a-domain-nano-ava_nighthawk" class="level3">
+<h3 class="anchored" data-anchor-id="nginx-file-published-to-work-with-a-domain-nano-ava_nighthawk">Nginx file published to work with a domain (nano ava_nighthawk)</h3>
+<blockquote class="blockquote">
+<p>nginx domain name file This is identical to test file, but now it is working off of the domain versus the IP address.</p>
+</blockquote>
+<pre class="nginx"><code>    server_name ava.nighthawkcodingsociety.com;</code></pre>
+</section>
+<section id="nginx-sites-enable-cd-etcnginxsites-enabled" class="level3">
+<h3 class="anchored" data-anchor-id="nginx-sites-enable-cd-etcnginxsites-enabled">Nginx sites-enable (cd /etc/nginx/sites-enabled)</h3>
+<blockquote class="blockquote">
+<p>enabled directory names Notice how names point back to sites-available. This is setup with <code>ln -s</code> command. Whose file still needs to be published.</p>
+</blockquote>
+<div class="sourceCode" id="cb48"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="ex">ubuntu@ip-172-31-18-94:/etc/nginx/sites-enabled$</span> ls <span class="at">-l</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="ex">total</span> 0</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="ex">lrwxrwxrwx</span> 1 root root 34 Sep 28 21:31 default <span class="at">-</span><span class="op">&gt;</span> /etc/nginx/sites-available/default</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="ex">lrwxrwxrwx</span> 1 root root 44 Oct  2 20:19 shruthi_nighthawk <span class="at">-</span><span class="op">&gt;</span> /etc/nginx/sites-available/shruthi_nighthawk</span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a><span class="ex">lrwxrwxrwx</span> 1 root root 31 Oct  4 00:48 test <span class="at">-</span><span class="op">&gt;</span> /etc/nginx/sites-available/test</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

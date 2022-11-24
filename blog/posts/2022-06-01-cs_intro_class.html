@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.269">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2022-06-01">
+<meta name="description" content="Preliminary ideas for a intro course for computer science">
+
+<title>APCSP2 - Intro to Computer Science Ideas</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="APCSP2 - Intro to Computer Science Ideas">
+<meta property="og:description" content="Preliminary ideas for a intro course for computer science">
+<meta property="og:site-name" content="APCSP2">
+<meta name="twitter:title" content="APCSP2 - Intro to Computer Science Ideas">
+<meta name="twitter:description" content="Preliminary ideas for a intro course for computer science">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">APCSP2</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog/index.html">
+ <span class="menu-text">Blog</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../schedule/index.html">
+ <span class="menu-text">Schedule</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../ap/index.html">
+ <span class="menu-text">AP Standards</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../cte/index.html">
+ <span class="menu-text">CTE Standards</span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">Intro to Computer Science Ideas</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#intro-class-logistics-del-norte-desires-title-by-end-of-meeting" id="toc-intro-class-logistics-del-norte-desires-title-by-end-of-meeting" class="nav-link active" data-scroll-target="#intro-class-logistics-del-norte-desires-title-by-end-of-meeting">Intro Class Logistics (Del Norte desires title by end of meeting)</a></li>
+  <li><a href="#pathway" id="toc-pathway" class="nav-link" data-scroll-target="#pathway">Pathway</a>
+  <ul class="collapse">
+  <li><a href="#start-with" id="toc-start-with" class="nav-link" data-scroll-target="#start-with">Start with:</a></li>
+  <li><a href="#move-on-to-main-focus" id="toc-move-on-to-main-focus" class="nav-link" data-scroll-target="#move-on-to-main-focus">Move on to main focus:</a></li>
+  </ul></li>
+  <li><a href="#certificate-programs" id="toc-certificate-programs" class="nav-link" data-scroll-target="#certificate-programs">Certificate Programs</a>
+  <ul class="collapse">
+  <li><a href="#linkedin-certificates-for-programming" id="toc-linkedin-certificates-for-programming" class="nav-link" data-scroll-target="#linkedin-certificates-for-programming">LinkedIn Certificates for Programming</a></li>
+  </ul></li>
+  <li><a href="#accreditation-articulation-and-beyond" id="toc-accreditation-articulation-and-beyond" class="nav-link" data-scroll-target="#accreditation-articulation-and-beyond">Accreditation, Articulation and Beyond</a></li>
+  <li><a href="#del-norte-2022-2023-course-outlines-and-student-projects" id="toc-del-norte-2022-2023-course-outlines-and-student-projects" class="nav-link" data-scroll-target="#del-norte-2022-2023-course-outlines-and-student-projects">Del Norte 2022-2023 Course Outlines and Student Projects</a></li>
+  <li><a href="#please-comment-requires-github-sign-in" id="toc-please-comment-requires-github-sign-in" class="nav-link" data-scroll-target="#please-comment-requires-github-sign-in">Please comment, requires GitHub sign-in</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/syeung2/APCSP2/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">Intro to Computer Science Ideas</h1>
+</div>
+
+<div>
+  <div class="description">
+    Preliminary ideas for a intro course for computer science
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">June 1, 2022</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="intro-class-logistics-del-norte-desires-title-by-end-of-meeting" class="level2">
+<h2 class="anchored" data-anchor-id="intro-class-logistics-del-norte-desires-title-by-end-of-meeting">Intro Class Logistics (Del Norte desires title by end of meeting)</h2>
+<blockquote class="blockquote">
+<p>Idea is to have a course to focusses on freshman/sophomore classes. The purpose at Del Norte, is to add to the beginning of the pathway that feeds into AP Computer Science Principles (CSP). - 1 trimester course of App Design or Game Design - 2 trimester course of App Design and Game Design</p>
+</blockquote>
+</section>
+<section id="pathway" class="level2">
+<h2 class="anchored" data-anchor-id="pathway">Pathway</h2>
+<blockquote class="blockquote">
+<p>The Pathway modifications at Del Norte High School with Intro course. 1. 24 Weeks. Intro to Computer Science, no experience 2. 36 Weeks (contract required). AP CSP, Data Structures 1 is targeting 10th-11th, prerequisite is Intro to Computer Science, waiver of Intro requires experience in Technologies taught in Del Norte program. 3. 36 Weeks (contract required). AP CSA, Data Structures 2 is targeting 11th-12th, prerequisite CSP and DS1, no waiver, minimum starting point is CSP</p>
+</blockquote>
+<section id="start-with" class="level3">
+<h3 class="anchored" data-anchor-id="start-with">Start with:</h3>
+<ul>
+<li>Scratch Introduction</li>
+<li>Course Plans
+<ul>
+<li>Introduction to tools (e.g.&nbsp;IDE and Github)</li>
+<li>Fundamentals in Programming in selected language (C# or Scratch)</li>
+<li>Agile Development Fundamentals, Pair Programming,</li>
+</ul></li>
+</ul>
+</section>
+<section id="move-on-to-main-focus" class="level3">
+<h3 class="anchored" data-anchor-id="move-on-to-main-focus">Move on to main focus:</h3>
+<ul>
+<li><a href="https://www.apple.com/education/k12/learn-to-code/">Create an Apple App using Xcode and Swift</a> AND/OR</li>
+<li><a href="https://learn.unity.com/course/teaching-game-design-and-development">Unity Game Development Curriculum</a></li>
+</ul>
+</section>
+</section>
+<section id="certificate-programs" class="level2">
+<h2 class="anchored" data-anchor-id="certificate-programs">Certificate Programs</h2>
+<blockquote class="blockquote">
+<p>Certificates are available online and at many avenues (Udemy, LinkedIN, Apple, etc). Teachers could/should learn and then perhaps teach courses that are aligned to certificates by an organization like LinkedIn. This would enable Teachers and District to confidently state that their Teachers are current to CTE advisors. ### LinkedIn Certification Programs for Development Engineering Methodology Skills to assist in teaching Project Based Learning.</p>
+</blockquote>
+<ul>
+<li><p><a href="https://www.linkedin.com/learning/github-issues-and-projects-for-teams">Github Issues</a></p></li>
+<li><p><a href="https://www.linkedin.com/learning/paths/become-an-agile-software-developer">Agile Development</a></p></li>
+<li><p><a href="https://www.linkedin.com/learning/paths/become-a-devops-engineer">Devops Engineer</a></p></li>
+</ul>
+<section id="linkedin-certificates-for-programming" class="level3">
+<h3 class="anchored" data-anchor-id="linkedin-certificates-for-programming">LinkedIn Certificates for Programming</h3>
+<blockquote class="blockquote">
+<p>Certificates to assist in teaching Intro to Programming, Computers Science Principles, Computer Science “A” development.</p>
+</blockquote>
+<ul>
+<li><p><a href="https://www.linkedin.com/learning/learning-scratch">Intro Scratch</a></p></li>
+<li><p><a href="https://www.linkedin.com/learning/paths/getting-started-as-a-c-sharp-developer">Intro C# Developer</a></p></li>
+<li><p><a href="https://www.linkedin.com/learning/paths/master-swift">Intro Swift Developer</a></p></li>
+<li><p><a href="https://www.linkedin.com/learning/paths/become-a-python-developer-8969630">CSP Python Developer</a></p></li>
+<li><p><a href="https://www.linkedin.com/learning/paths/become-a-javascript-developer">CSP - JavaScript Developer</a></p></li>
+<li><p><a href="https://www.linkedin.com/learning/learning-java-4">CSA - Java Developer</a></p></li>
+</ul>
+</section>
+</section>
+<section id="accreditation-articulation-and-beyond" class="level2">
+<h2 class="anchored" data-anchor-id="accreditation-articulation-and-beyond">Accreditation, Articulation and Beyond</h2>
+<blockquote class="blockquote">
+<p>In discussion on titles, it seems vital to a High School Pathway that it leads beyond. A key contributor to increasing Del Norte student participation in Computer Science, ~100 tto ~240, is the introduction of Computer Science Principles. - <strong><em>Computer Science Principles has AP testing and UC accreditation</em></strong> as a 3rd Science, not just elective. - <strong><em>Computer Science “A” has AP testing and UC accreditation</em></strong> as a 4th Math, not just elective. - <strong><em>Data Structure 1&amp;2 with B or above graded will articulate to CS113 Data Structures.</em></strong> There has been movement by Emily Stephenson, Del Norte and Mira Costa College regarding articulation. This begins with students taking CSP/DS1 in Fall of 2022, it completes with students finishing CSA/DSP2 in Summer of 2024, receiving credit for <a href="https://catalog.miracosta.edu/disciplines/computerscience/#courseinventory">CS113 – Data Structures</a>. - <strong><em>Beyond College</em></strong>, it seems the other “Big Thing” that High School Computer Science can do is to prepare students for internships and jobs. Del Norte has been placing people regularly at Northrop Grumman (2 per year), UCSD Supercomputer (2 per year), Code Ninjas (2 per year). Additionally, I have 2 reports of students Teaching in CompSci Labs on campus (Harvard and Mira Costa College). Lastly, I have heard of a Purdue freshmen that is currently getting a Government clearance for internship in Summer 2023. An absolute key is having projects published on GitHub! The Purdue freshmen said the internship interviewer said “they reviewed projects on GitHub and new that he could code”. These opportunities seem to come because of Agile Methodology, Scrum, Python/Flask, Java/Spring, AWS, SQL, Linux, Anaconda, Docker, Nginx, GitHub.</p>
+</blockquote>
+<pre><code>CS 113: Basic Data Structures and Algorithms
+
+Units: 3
+Prerequisites: CS 112.
+Acceptable for Credit: CSU, UC
+Lecture 2 hours, laboratory 3 hours.
+Course Typically Offered: Fall, Spring, and Summer</code></pre>
+<ul>
+<li>The course uses topics of personal and social relevance to investigate the impact of computing through efficient algorithms and properly designed data structures. Students explore the software development process by developing effective solutions using industry-standard tools. Topics include searching, sorting, hashing, algorithm analysis, object-oriented design, collections, lists, stacks, queues, trees, sets, dictionaries, and graphs. C-ID COMP-132.</li>
+</ul>
+</section>
+<section id="del-norte-2022-2023-course-outlines-and-student-projects" class="level2">
+<h2 class="anchored" data-anchor-id="del-norte-2022-2023-course-outlines-and-student-projects">Del Norte 2022-2023 Course Outlines and Student Projects</h2>
+<blockquote class="blockquote">
+<p>Del Norte Materials are all online and maintained in GitHub. Content produced is automatically deployed to a public Website. - <a href="https://nighthawkcoders.github.io/APCSA/schedule">Computer Science “A”</a> - <a href="https://nighthawkcoders.github.io/APCSA//points/11">Trimester 1 CSA Student Projects/Review Tickets - AT BOTTOM OF LINK</a> - <a href="https://nighthawkcoders.github.io/APCSP/schedule">Computer Science Principles</a> - <a href="https://nighthawkcoders.github.io/APCSP//points/11">Trimester 1 CSP Student Projects/Review Tickets - AT BOTTOM OF LINK</a></p>
+</blockquote>
+</section>
+<section id="please-comment-requires-github-sign-in" class="level2">
+<h2 class="anchored" data-anchor-id="please-comment-requires-github-sign-in">Please comment, requires GitHub sign-in</h2>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

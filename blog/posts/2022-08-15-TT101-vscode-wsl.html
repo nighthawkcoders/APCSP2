@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.269">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2022-08-15">
+<meta name="description" content="Instructions for Windows users on how to use VSCode with WSL in order to add a Linux-based development.">
+
+<title>APCSP2 - VSCode Download with WSL</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="APCSP2 - VSCode Download with WSL">
+<meta property="og:description" content="Instructions for Windows users on how to use VSCode with WSL in order to add a Linux-based development.">
+<meta property="og:image" content="https://syeung2.github.io/APCSP2/blog/posts/wsl.png">
+<meta property="og:site-name" content="APCSP2">
+<meta name="twitter:title" content="APCSP2 - VSCode Download with WSL">
+<meta name="twitter:description" content="Instructions for Windows users on how to use VSCode with WSL in order to add a Linux-based development.">
+<meta name="twitter:image" content="https://syeung2.github.io/APCSP2/blog/posts/wsl.png">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">APCSP2</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog/index.html">
+ <span class="menu-text">Blog</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../schedule/index.html">
+ <span class="menu-text">Schedule</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../ap/index.html">
+ <span class="menu-text">AP Standards</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../cte/index.html">
+ <span class="menu-text">CTE Standards</span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">VSCode Download with WSL</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#instructions-to-download-visual-studio-code-remote---wsl" id="toc-instructions-to-download-visual-studio-code-remote---wsl" class="nav-link active" data-scroll-target="#instructions-to-download-visual-studio-code-remote---wsl">Instructions to Download Visual Studio Code Remote - WSL</a>
+  <ul class="collapse">
+  <li><a href="#download-wsl" id="toc-download-wsl" class="nav-link" data-scroll-target="#download-wsl">Download WSL</a></li>
+  <li><a href="#download-visual-studio-code" id="toc-download-visual-studio-code" class="nav-link" data-scroll-target="#download-visual-studio-code">Download Visual Studio Code</a></li>
+  <li><a href="#opening-up-vscode-with-wsl" id="toc-opening-up-vscode-with-wsl" class="nav-link" data-scroll-target="#opening-up-vscode-with-wsl">Opening up VSCode with WSL</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/syeung2/APCSP2/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">VSCode Download with WSL</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">C4.3</div>
+    <div class="quarto-category">C5.0</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Instructions for Windows users on how to use VSCode with WSL in order to add a Linux-based development.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">August 15, 2022</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="instructions-to-download-visual-studio-code-remote---wsl" class="level2">
+<h2 class="anchored" data-anchor-id="instructions-to-download-visual-studio-code-remote---wsl">Instructions to Download Visual Studio Code Remote - WSL</h2>
+<blockquote class="blockquote">
+<p>Windows is the number one desktop operating system. However, Linux is a preferred standard for many developers. Using WSL you can develop in a Linux-based environment, use Linux-specific tool chains and utilities, and run and debug your Linux-based applications all from the comfort of Windows. This gives the developer on Windows the best of both worlds.</p>
+</blockquote>
+<section id="download-wsl" class="level3">
+<h3 class="anchored" data-anchor-id="download-wsl">Download WSL</h3>
+<blockquote class="blockquote">
+<p>This section of the document is intended to get the WSL distribution of Ubuntu installed on you Windows PC.</p>
+</blockquote>
+<ol type="1">
+<li>Open a PowerShell. Enter WSL installation command at Prompt:</li>
+</ol>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">wsl</span> <span class="at">--install</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol start="2" type="1">
+<li>If you receive error <code>the required operation requires elevation</code> You will need to perform wsl install command again, but 1st elevate permissions using command: <code>start-process PowerShell -verb runas</code></li>
+<li>As it states in output in shell, you will need to reboot your computer. My suggestion is to select <mark>Restart</mark> or if available <mark>Update and Restart</mark>.</li>
+<li>After booting up there are several things that could occur</li>
+</ol>
+<ul>
+<li>A Command or PowerShell prompt could automatically pop up prompting you for a username. Choose a username and password to create an account.</li>
+<li>Some other event may occur. Make sure you establish password when requested. Verifying or take action in Command or Powershell, try these as <code>C:\Users\&lt;username&gt;</code>…
+<ul>
+<li>Type <code>wsl --list</code>, you should see Ubuntu</li>
+<li>If no Ubuntu, Type <code>wsl --list --online</code>, then use <code>wsl --install -d Ubuntu</code></li>
+<li>After success</li>
+</ul></li>
+</ul>
+<ol start="5" type="1">
+<li>After WSL install, verify the following before you continue:</li>
+</ol>
+<ul>
+<li>Open Command or Powershell, <mark>Run as your own user account</mark>.
+<ul>
+<li>Type <code>wsl</code>, this should put you in a different looking prompt. From <code>C:\Users\&lt;username&gt;</code> to <code>&lt;username&gt;@MSI:</code></li>
+<li>If you ever need to elevate permission for installation <code>sudo wsl</code>, followed by your computer password.</li>
+</ul></li>
+<li>Observe that drive changes from <code>C:\</code> to <code>/mnt/c</code> when you change prompt from native Windows to WSL.</li>
+</ul>
+</section>
+<section id="download-visual-studio-code" class="level3">
+<h3 class="anchored" data-anchor-id="download-visual-studio-code">Download Visual Studio Code</h3>
+<blockquote class="blockquote">
+<p>Installing Visual Studio Code (VSCode) with the Remote extension lets you use the WSL as your full-time development environment right from VS Code 1. Install VSCode, <a href="https://code.visualstudio.com/">Download VSCode Windows Version</a> 2. When prompted to Select Additional Tasks during installation, be sure to check the Add to PATH option so you can easily open a folder in WSL using the VSCode <code>code</code> command. 3. Install the <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack">Remote Development extension pack</a></p>
+</blockquote>
+</section>
+<section id="opening-up-vscode-with-wsl" class="level3">
+<h3 class="anchored" data-anchor-id="opening-up-vscode-with-wsl">Opening up VSCode with WSL</h3>
+<ol type="1">
+<li>Open a WSL terminal window (using the start menu item or by typing wsl from a command prompt / PowerShell)</li>
+<li>Navigate to a folder you’d like to open in VS Code Here are some useful commands for our work</li>
+</ol>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~     <span class="co"># takes you to your personal directory on Windows</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> vscode   <span class="co"># creates a folder to clone your repositories</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span>     <span class="co"># views the content of the directory you are currently on</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/vscode  <span class="co"># changes the directory to path for vscode files</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/nighthawkcoders/APCSP.git <span class="co"># clone repo</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> APCSP  <span class="co"># changes the directory to path for APCSP repos assets</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="ex">code</span> .  <span class="co"># opens APCSP in VSCode</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ..    <span class="co"># changes the directory to the previous/parent directory</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> user.email mygmail@gmail.com  <span class="co"># tell git your email</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> user.name mygithub   <span class="co"># tell git your github id</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol start="3" type="1">
+<li>Type <code>code .</code> in the terminal. When doing this for the first time, you should see VS Code fetching components needed to run in WSL. This should only take a short while, and is only needed once.</li>
+</ol>
+<section id="opening-up-vscode-with-wsl-terminal" class="level4">
+<h4 class="anchored" data-anchor-id="opening-up-vscode-with-wsl-terminal">Opening up VSCode with WSL terminal</h4>
+<blockquote class="blockquote">
+<p>Here is sample of steps with WSL <username> equal to <code>shay</code> These steps will need to be adapted to your environment.</username></p>
+</blockquote>
+<ul>
+<li>These two commands help git to understand your identity</li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">shay@MSI:/mnt/c/Users/ShayM$</span> git config <span class="at">--global</span> user.email shay@gmail.com</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">shay@MSI:/mnt/c/Users/ShayM$</span> git config <span class="at">--global</span> user.name shay</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>These commands clone a repository and load VSCode for work</li>
+</ul>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">shay@MSI:/mnt/c/Users/ShayM$</span> mkdir vscode</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">shay@MSI:/mnt/c/Users/ShayM$</span> cd vscode</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">shay@MSI:/mnt/c/Users/ShayM/vscode$</span> git clone https://github.com/nighthawkcoders/APCSP.git</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Cloning</span> into <span class="st">'APCSP'</span>...</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span> Enumerating objects: 8306, done.</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span> Counting objects: 100% <span class="er">(</span><span class="ex">2360/2360</span><span class="kw">)</span><span class="ex">,</span> done.</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span> Compressing objects: 100% <span class="er">(</span><span class="ex">723/723</span><span class="kw">)</span><span class="ex">,</span> done.</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span> Total 8306 <span class="er">(</span><span class="ex">delta</span> 1312<span class="kw">)</span><span class="ex">,</span> reused 2305 <span class="er">(</span><span class="ex">delta</span> 1262<span class="kw">)</span><span class="ex">,</span> pack-reused 5946</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="ex">Receiving</span> objects: 100% <span class="er">(</span><span class="ex">8306/8306</span><span class="kw">)</span><span class="ex">,</span> 16.27 MiB <span class="kw">|</span> <span class="ex">1.11</span> MiB/s, done.</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="ex">Resolving</span> deltas: 100% <span class="er">(</span><span class="ex">4360/4360</span><span class="kw">)</span><span class="ex">,</span> done.</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="ex">shay@MSI:/mnt/c/Users/ShayM/vscode$</span> cd APCSP</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="ex">shay@MSI:/mnt/c/Users/ShayM/vscode/APCSP$</span> code .</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="ex">Installing</span> VS Code Server for x64 <span class="er">(</span><span class="ex">6d9b74a70ca9c7733b29f0456fd8195364076dda</span><span class="kw">)</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="ex">Downloading:</span> 100%</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="ex">Unpacking:</span> 100%</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="ex">Unpacked</span> 2416 files and folders to /home/shay/.vscode-server/bin/6d9b74a70ca9c7733b29f0456fd8195364076dda.</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="ex">shay@MSI:/mnt/c/Users/ShayM/vscode$</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="setup-observation" class="level4">
+<h4 class="anchored" data-anchor-id="setup-observation">Setup Observation</h4>
+<blockquote class="blockquote">
+<p>VSCode with WSL shows a WSL indicator in the bottom left corner of Window. <img src="{{site.baseurl}}/images/wsl-statusbar-indicator.png" class="img-fluid" alt="WSL Status Bar"></p>
+</blockquote>
+</section>
+<section id="resource" class="level4">
+<h4 class="anchored" data-anchor-id="resource">Resource</h4>
+<blockquote class="blockquote">
+<p>Read more on WSL and VSCode <a href="https://code.visualstudio.com/docs/remote/wsl">VSCode doc</a></p>
+</blockquote>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

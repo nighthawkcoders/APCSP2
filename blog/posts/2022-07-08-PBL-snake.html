@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.269">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2022-07-08">
+<meta name="description" content="A pretty advanced use of JavaScript building classic snake game using menu controls, key events, snake simulation and timers.">
+
+<title>APCSP2 - Classic Snake Game</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="APCSP2 - Classic Snake Game">
+<meta property="og:description" content="A pretty advanced use of JavaScript building classic snake game using menu controls, key events, snake simulation and timers.">
+<meta property="og:image" content="https://syeung2.github.io/APCSP2/blog/posts/snake.png">
+<meta property="og:site-name" content="APCSP2">
+<meta name="twitter:title" content="APCSP2 - Classic Snake Game">
+<meta name="twitter:description" content="A pretty advanced use of JavaScript building classic snake game using menu controls, key events, snake simulation and timers.">
+<meta name="twitter:image" content="https://syeung2.github.io/APCSP2/blog/posts/snake.png">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">APCSP2</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog/index.html">
+ <span class="menu-text">Blog</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../schedule/index.html">
+ <span class="menu-text">Schedule</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../ap/index.html">
+ <span class="menu-text">AP Standards</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../cte/index.html">
+ <span class="menu-text">CTE Standards</span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">Classic Snake Game</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">Classic Snake Game</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">C4.9</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    A pretty advanced use of JavaScript building classic snake game using menu controls, key events, snake simulation and timers.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">July 8, 2022</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<p>{% include nav_frontend.html %}</p>
+<style>
+
+    body{
+    }
+    .wrap{
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    canvas{
+        display: none;
+        border-style: solid;
+        border-width: 10px;
+        border-color: #FFFFFF;
+    }
+    canvas:focus{
+        outline: none;
+    }
+
+    /* All screens style */
+    #gameover p, #setting p, #menu p{
+        font-size: 20px;
+    }
+
+    #gameover a, #setting a, #menu a{
+        font-size: 30px;
+        display: block;
+    }
+
+    #gameover a:hover, #setting a:hover, #menu a:hover{
+        cursor: pointer;
+    }
+
+    #gameover a:hover::before, #setting a:hover::before, #menu a:hover::before{
+        content: ">";
+        margin-right: 10px;
+    }
+
+    #menu{
+        display: block;
+    }
+
+    #gameover{
+        display: none;
+    }
+
+    #setting{
+        display: none;
+    }
+
+    #setting input{
+        display:none;
+    }
+
+    #setting label{
+        cursor: pointer;
+    }
+
+    #setting input:checked + label{
+        background-color: #FFF;
+        color: #000;
+    }
+</style>
+<div class="container">
+<pre><code>&lt;header class="pb-3 mb-4 border-bottom border-primary text-dark"&gt;
+    &lt;p class="fs-4"&gt;Snake score: &lt;span id="score_value"&gt;0&lt;/span&gt;&lt;/p&gt;
+&lt;/header&gt;
+&lt;div class="container bg-secondary" style="text-align:center;"&gt;
+    &lt;!-- Main Menu --&gt;
+    &lt;div id="menu" class="py-4 text-light"&gt;
+        &lt;p&gt;Welcome to Snake, press &lt;span style="background-color: #FFFFFF; color: #000000"&gt;space&lt;/span&gt; to begin&lt;/p&gt;
+        &lt;a id="new_game" class="link-alert"&gt;new game&lt;/a&gt;
+        &lt;a id="setting_menu" class="link-alert"&gt;settings&lt;/a&gt;
+    &lt;/div&gt;
+    &lt;!-- Game Over --&gt;
+    &lt;div id="gameover" class="py-4 text-light"&gt;
+        &lt;p&gt;Game Over, press &lt;span style="background-color: #FFFFFF; color: #000000"&gt;space&lt;/span&gt; to try again&lt;/p&gt;
+        &lt;a id="new_game1" class="link-alert"&gt;new game&lt;/a&gt;
+        &lt;a id="setting_menu1" class="link-alert"&gt;settings&lt;/a&gt;
+    &lt;/div&gt;
+    &lt;!-- Play Screen --&gt;
+    &lt;canvas id="snake" class="wrap" width="320" height="320" tabindex="1"&gt;&lt;/canvas&gt;
+    &lt;!-- Settings Screen --&gt;
+    &lt;div id="setting" class="py-4 text-light"&gt;
+        &lt;p&gt;Settings Screen, press &lt;span style="background-color: #FFFFFF; color: #000000"&gt;space&lt;/span&gt; to go back to playing&lt;/p&gt;
+        &lt;a id="new_game2" class="link-alert"&gt;new game&lt;/a&gt;
+        &lt;br&gt;
+        &lt;p&gt;Speed:
+            &lt;input id="speed1" type="radio" name="speed" value="120" checked/&gt;
+            &lt;label for="speed1"&gt;Slow&lt;/label&gt;
+            &lt;input id="speed2" type="radio" name="speed" value="75"/&gt;
+            &lt;label for="speed2"&gt;Normal&lt;/label&gt;
+            &lt;input id="speed3" type="radio" name="speed" value="35"/&gt;
+            &lt;label for="speed3"&gt;Fast&lt;/label&gt;
+        &lt;/p&gt;
+        &lt;p&gt;Wall:
+            &lt;input id="wallon" type="radio" name="wall" value="1" checked/&gt;
+            &lt;label for="wallon"&gt;On&lt;/label&gt;
+            &lt;input id="walloff" type="radio" name="wall" value="0"/&gt;
+            &lt;label for="walloff"&gt;Off&lt;/label&gt;
+        &lt;/p&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+</div>
+<script>
+    (function(){
+        /* Attributes of Game */
+        /////////////////////////////////////////////////////////////
+        // Canvas & Context
+        const canvas = document.getElementById("snake");
+        const ctx = canvas.getContext("2d");
+        // HTML Game IDs
+        const SCREEN_SNAKE = 0;
+        const screen_snake = document.getElementById("snake");
+        const ele_score = document.getElementById("score_value");
+        const speed_setting = document.getElementsByName("speed");
+        const wall_setting = document.getElementsByName("wall");
+        // HTML Screen IDs (div)
+        const SCREEN_MENU = -1, SCREEN_GAME_OVER=1, SCREEN_SETTING=2;
+        const screen_menu = document.getElementById("menu");
+        const screen_game_over = document.getElementById("gameover");
+        const screen_setting = document.getElementById("setting");
+        // HTML Event IDs (a tags)
+        const button_new_game = document.getElementById("new_game");
+        const button_new_game1 = document.getElementById("new_game1");
+        const button_new_game2 = document.getElementById("new_game2");
+        const button_setting_menu = document.getElementById("setting_menu");
+        const button_setting_menu1 = document.getElementById("setting_menu1");
+        // Game Control
+        const BLOCK = 10;   // size of block rendering
+        let SCREEN = SCREEN_MENU;
+        let snake;
+        let snake_dir;
+        let snake_next_dir;
+        let snake_speed;
+        let food = {x: 0, y: 0};
+        let score;
+        let wall;
+        /* Display Control */
+        /////////////////////////////////////////////////////////////
+        // 0 for the game
+        // 1 for the main menu
+        // 2 for the settings screen
+        // 3 for the game over screen
+        let showScreen = function(screen_opt){
+            SCREEN = screen_opt;
+            switch(screen_opt){
+                case SCREEN_SNAKE:
+                    screen_snake.style.display = "block";
+                    screen_menu.style.display = "none";
+                    screen_setting.style.display = "none";
+                    screen_game_over.style.display = "none";
+                    break;
+                case SCREEN_GAME_OVER:
+                    screen_snake.style.display = "block";
+                    screen_menu.style.display = "none";
+                    screen_setting.style.display = "none";
+                    screen_game_over.style.display = "block";
+                    break;
+                case SCREEN_SETTING:
+                    screen_snake.style.display = "none";
+                    screen_menu.style.display = "none";
+                    screen_setting.style.display = "block";
+                    screen_game_over.style.display = "none";
+                    break;
+            }
+        }
+        /* Actions and Events  */
+        /////////////////////////////////////////////////////////////
+        window.onload = function(){
+            // HTML Events to Functions
+            button_new_game.onclick = function(){newGame();};
+            button_new_game1.onclick = function(){newGame();};
+            button_new_game2.onclick = function(){newGame();};
+            button_setting_menu.onclick = function(){showScreen(SCREEN_SETTING);};
+            button_setting_menu1.onclick = function(){showScreen(SCREEN_SETTING);};
+            // speed
+            setSnakeSpeed(150);
+            for(let i = 0; i < speed_setting.length; i++){
+                speed_setting[i].addEventListener("click", function(){
+                    for(let i = 0; i < speed_setting.length; i++){
+                        if(speed_setting[i].checked){
+                            setSnakeSpeed(speed_setting[i].value);
+                        }
+                    }
+                });
+            }
+            // wall setting
+            setWall(1);
+            for(let i = 0; i < wall_setting.length; i++){
+                wall_setting[i].addEventListener("click", function(){
+                    for(let i = 0; i < wall_setting.length; i++){
+                        if(wall_setting[i].checked){
+                            setWall(wall_setting[i].value);
+                        }
+                    }
+                });
+            }
+            // activate window events
+            window.addEventListener("keydown", function(evt) {
+                // spacebar detected
+                if(evt.code === "Space" && SCREEN !== SCREEN_SNAKE)
+                    newGame();
+            }, true);
+        }
+        /* Snake is on the Go (Driver Function)  */
+        /////////////////////////////////////////////////////////////
+        let mainLoop = function(){
+            let _x = snake[0].x;
+            let _y = snake[0].y;
+            snake_dir = snake_next_dir;   // read async event key
+            // Direction 0 - Up, 1 - Right, 2 - Down, 3 - Left
+            switch(snake_dir){
+                case 0: _y--; break;
+                case 1: _x++; break;
+                case 2: _y++; break;
+                case 3: _x--; break;
+            }
+            snake.pop(); // tail is removed
+            snake.unshift({x: _x, y: _y}); // head is new in new position/orientation
+            // Wall Checker
+            if(wall === 1){
+                // Wall on, Game over test
+                if (snake[0].x < 0 || snake[0].x === canvas.width / BLOCK || snake[0].y < 0 || snake[0].y === canvas.height / BLOCK){
+                    showScreen(SCREEN_GAME_OVER);
+                    return;
+                }
+            }else{
+                // Wall Off, Circle around
+                for(let i = 0, x = snake.length; i < x; i++){
+                    if(snake[i].x < 0){
+                        snake[i].x = snake[i].x + (canvas.width / BLOCK);
+                    }
+                    if(snake[i].x === canvas.width / BLOCK){
+                        snake[i].x = snake[i].x - (canvas.width / BLOCK);
+                    }
+                    if(snake[i].y < 0){
+                        snake[i].y = snake[i].y + (canvas.height / BLOCK);
+                    }
+                    if(snake[i].y === canvas.height / BLOCK){
+                        snake[i].y = snake[i].y - (canvas.height / BLOCK);
+                    }
+                }
+            }
+            // Snake vs Snake checker
+            for(let i = 1; i < snake.length; i++){
+                // Game over test
+                if (snake[0].x === snake[i].x && snake[0].y === snake[i].y){
+                    showScreen(SCREEN_GAME_OVER);
+                    return;
+                }
+            }
+            // Snake eats food checker
+            if(checkBlock(snake[0].x, snake[0].y, food.x, food.y)){
+                snake[snake.length] = {x: snake[0].x, y: snake[0].y};
+                altScore(++score);
+                addFood();
+                activeDot(food.x, food.y);
+            }
+            // Repaint canvas
+            ctx.beginPath();
+            ctx.fillStyle = "royalblue";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            // Paint snake
+            for(let i = 0; i < snake.length; i++){
+                activeDot(snake[i].x, snake[i].y);
+            }
+            // Paint food
+            activeDot(food.x, food.y);
+            // Debug
+            //document.getElementById("debug").innerHTML = snake_dir + " " + snake_next_dir + " " + snake[0].x + " " + snake[0].y;
+            // Recursive call after speed delay, déjà vu
+            setTimeout(mainLoop, snake_speed);
+        }
+        /* New Game setup */
+        /////////////////////////////////////////////////////////////
+        let newGame = function(){
+            // snake game screen
+            showScreen(SCREEN_SNAKE);
+            screen_snake.focus();
+            // game score to zero
+            score = 0;
+            altScore(score);
+            // initial snake
+            snake = [];
+            snake.push({x: 0, y: 15});
+            snake_next_dir = 1;
+            // food on canvas
+            addFood();
+            // activate canvas event
+            canvas.onkeydown = function(evt) {
+                changeDir(evt.keyCode);
+            }
+            mainLoop();
+        }
+        /* Key Inputs and Actions */
+        /////////////////////////////////////////////////////////////
+        let changeDir = function(key){
+            // test key and switch direction
+            switch(key) {
+                case 37:    // left arrow
+                    if (snake_dir !== 1)    // not right
+                        snake_next_dir = 3; // then switch left
+                    break;
+                case 38:    // up arrow
+                    if (snake_dir !== 2)    // not down
+                        snake_next_dir = 0; // then switch up
+                    break;
+                case 39:    // right arrow
+                    if (snake_dir !== 3)    // not left
+                        snake_next_dir = 1; // then switch right
+                    break;
+                case 40:    // down arrow
+                    if (snake_dir !== 0)    // not up
+                        snake_next_dir = 2; // then switch down
+                    break;
+            }
+        }
+        /* Dot for Food or Snake part */
+        /////////////////////////////////////////////////////////////
+        let activeDot = function(x, y){
+            ctx.fillStyle = "#FFFFFF";
+            ctx.fillRect(x * BLOCK, y * BLOCK, BLOCK, BLOCK);
+        }
+        /* Random food placement */
+        /////////////////////////////////////////////////////////////
+        let addFood = function(){
+            food.x = Math.floor(Math.random() * ((canvas.width / BLOCK) - 1));
+            food.y = Math.floor(Math.random() * ((canvas.height / BLOCK) - 1));
+            for(let i = 0; i < snake.length; i++){
+                if(checkBlock(food.x, food.y, snake[i].x, snake[i].y)){
+                    addFood();
+                }
+            }
+        }
+        /* Collision Detection */
+        /////////////////////////////////////////////////////////////
+        let checkBlock = function(x, y, _x, _y){
+            return (x === _x && y === _y);
+        }
+        /* Update Score */
+        /////////////////////////////////////////////////////////////
+        let altScore = function(score_val){
+            ele_score.innerHTML = String(score_val);
+        }
+        /////////////////////////////////////////////////////////////
+        // Change the snake speed...
+        // 150 = slow
+        // 100 = normal
+        // 50 = fast
+        let setSnakeSpeed = function(speed_value){
+            snake_speed = speed_value;
+        }
+        /////////////////////////////////////////////////////////////
+        let setWall = function(wall_value){
+            wall = wall_value;
+            if(wall === 0){screen_snake.style.borderColor = "#606060";}
+            if(wall === 1){screen_snake.style.borderColor = "#FFFFFF";}
+        }
+    })();
+</script>
+
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

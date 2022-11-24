@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.269">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2022-11-14">
+<meta name="description" content="Overview of objectives for Trimester 2. Lessons, Algorithms, and Create Performance Task.">
+
+<title>APCSP2 - Week of 11-14, Tri 2 Into, Tools and Issues</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="APCSP2 - Week of 11-14, Tri 2 Into, Tools and Issues">
+<meta property="og:description" content="Overview of objectives for Trimester 2.  Lessons, Algorithms, and Create Performance Task.">
+<meta property="og:image" content="https://syeung2.github.io/APCSP2/blog/posts/points.jpeg">
+<meta property="og:site-name" content="APCSP2">
+<meta name="twitter:title" content="APCSP2 - Week of 11-14, Tri 2 Into, Tools and Issues">
+<meta name="twitter:description" content="Overview of objectives for Trimester 2.  Lessons, Algorithms, and Create Performance Task.">
+<meta name="twitter:image" content="https://syeung2.github.io/APCSP2/blog/posts/points.jpeg">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">APCSP2</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog/index.html">
+ <span class="menu-text">Blog</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../schedule/index.html">
+ <span class="menu-text">Schedule</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../ap/index.html">
+ <span class="menu-text">AP Standards</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../cte/index.html">
+ <span class="menu-text">CTE Standards</span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">Week of 11-14, Tri 2 Into, Tools and Issues</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#plans-week-13" id="toc-plans-week-13" class="nav-link active" data-scroll-target="#plans-week-13">Plans Week 13</a></li>
+  <li><a href="#trimester-2-pre-holiday-objectives" id="toc-trimester-2-pre-holiday-objectives" class="nav-link" data-scroll-target="#trimester-2-pre-holiday-objectives">Trimester 2 Pre-Holiday Objectives</a></li>
+  <li><a href="#trimester-2-post-holiday-objectives" id="toc-trimester-2-post-holiday-objectives" class="nav-link" data-scroll-target="#trimester-2-post-holiday-objectives">Trimester 2 Post-Holiday Objectives</a></li>
+  <li><a href="#tools-and-issue-verification-3-points" id="toc-tools-and-issue-verification-3-points" class="nav-link" data-scroll-target="#tools-and-issue-verification-3-points">Tools and Issue Verification (3 points)</a></li>
+  <li><a href="#lesson-plans-and-presentation-7-points-.-recording-will-be-in-parts" id="toc-lesson-plans-and-presentation-7-points-.-recording-will-be-in-parts" class="nav-link" data-scroll-target="#lesson-plans-and-presentation-7-points-.-recording-will-be-in-parts">Lesson Plans and Presentation, (7 points) . – recording will be in parts</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/syeung2/APCSP2/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">Week of 11-14, Tri 2 Into, Tools and Issues</h1>
+</div>
+
+<div>
+  <div class="description">
+    Overview of objectives for Trimester 2. Lessons, Algorithms, and Create Performance Task.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 14, 2022</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="plans-week-13" class="level2">
+<h2 class="anchored" data-anchor-id="plans-week-13">Plans Week 13</h2>
+<blockquote class="blockquote">
+<p>Weeks Plans - Monday: <strong><em>Check #announcements daily, Form Teams, Pick Teaching Topic, GDP, Setup Team, Carry over or establish new Projects and Team repositories, Establish scrum board</em></strong> . Teachers will have very <strong><em>little tolerance for tools that are not working!!!</em></strong> Verify Tools, Fastpages Kernels, WSL, and Anaconda as applicable (Due Friday). - Tuesday: Binary Logic and Abstractions review, <a href="https://cs50.harvard.edu/x/2022/weeks/0/">Harvard CS50</a> minute 0 to minute 50 to provide background on binary, complete all 50 minutes recommended - Wednesday: Substitute, Work Day - Thursday: Lesson Points, Lesson Homework, Tour/highlights of Binary Code 10 minutes, Work Day - Friday: *<strong>Tools and Lesson Plan/Issues Verification Due</strong></p>
+</blockquote>
+</section>
+<section id="trimester-2-pre-holiday-objectives" class="level2">
+<h2 class="anchored" data-anchor-id="trimester-2-pre-holiday-objectives">Trimester 2 Pre-Holiday Objectives</h2>
+<blockquote class="blockquote">
+<p><mark>Unit 2 and Unit 3 mastery.</mark> - Students needs to master Big Idea 3 Algorithms and Programming from College Board online curriculum prior to winter break. - Students should master Unit 2, topics 2.1, 2.3, and 2.4 before winter break. - Teams will share a lesson. - Every team must present and be clearly involved in preparation. Review tickets are required for each student with links to tangibles. - In lesson preparation and teaching students should try to use Binary as data in lessons. All algorithms need data and there are many applications of Binary that can support the Algorithms from College Board Unit 3 - Exceptions can be made to Binary. But, this must be discussed with Teacher in advance. - Students will be working with Fastpages, <strong><em>Jupyter Notebooks: Python, JavaScript kernels.</em></strong> Additionally, students will work in <strong><em>Frontend JavaScript code in Fastpages Markdown files</em></strong> (see <a href="https://nighthawkcoders.github.io/APCSP/frontend/overview">Frontend Examples</a>. - Through the Trimester students will be expected to *<strong>present Fastpages/Blog with Homework assignments and one-to-many Frontend JavaScrip web applications.</strong></p>
+</blockquote>
+</section>
+<section id="trimester-2-post-holiday-objectives" class="level2">
+<h2 class="anchored" data-anchor-id="trimester-2-post-holiday-objectives">Trimester 2 Post-Holiday Objectives</h2>
+<blockquote class="blockquote">
+<p><mark>Create Performance Task completed.</mark> - After additional Data and Algorithm mastery in initial 5 weeks of trimester… students and teams will <strong><em>transition to “Create Performance Task” projects</em></strong>. 12 hours of class time will be allocated to this task over the final 7 weeks. Additionally, you will use this project in Trimester 2 N@tM presentations.<br>
+- Be sure to have an <strong><em>interactive portion to this project</em></strong>, this is key to College Board Video and N@tM presentations. - During the 7 weeks we will be <strong><em>learning more about APIs, creating Frontend forms, storing forms in Databases, posting comments, uploading (images) and continuing with likes. As we transition to Trimester 3 we will creating user login and site security.</em></strong> - <strong><em>Plan your Create Performance Task with these features in mind.</em></strong> FYI, 1-4 people can work on a project, but everyone must have there own feature that represents all the College Board requirements. - We will have Tech Talks in Career Tech, AP Test and Human Development during the last 7 weeks.</p>
+</blockquote>
+</section>
+<section id="tools-and-issue-verification-3-points" class="level2">
+<h2 class="anchored" data-anchor-id="tools-and-issue-verification-3-points">Tools and Issue Verification (3 points)</h2>
+<blockquote class="blockquote">
+<p><mark>Summary of Points.</mark> - Individual Tools Verification, VSCode, JavaScript and Python Kernels working on Laptop/Desktop. “Python Jupyter Notebook” and “Javascript Fastpages Markdown files will be key technical platforms. If you have problems currently, go back and re-install tools from 1st trimester guide. Be sure VS Code is running out of Anaconda environment. Perform <strong><em>make server</em></strong> to pretest prior to commits. Show <strong><em>running code</em></strong> in Fastpages for Binary Markdown and FastPage Python. - Each member of team pick a different hack or pair program 2 hacks. Create <strong><em>Individual Issue</em></strong> with checkboxes. This should be planned in Individual FastPages. However, you should plan a hack that is beneficial to topic that you will be Teaching. Consider this individual research.</p>
+</blockquote>
+</section>
+<section id="lesson-plans-and-presentation-7-points-.-recording-will-be-in-parts" class="level2">
+<h2 class="anchored" data-anchor-id="lesson-plans-and-presentation-7-points-.-recording-will-be-in-parts">Lesson Plans and Presentation, (7 points) . – recording will be in parts</h2>
+<ul>
+<li><strong><em>Plan Individual Binary Logic and Abstraction Hacks.</em></strong> Each member of team pick a different hack or pair program 2 hacks. Create <strong><em>Individual Issue</em></strong> with checkboxes. Topics for Hacks are in Binary Logic and Algorithms Blog. Build all hacks that you interpret as valuable/required for your lesson plan!!! <strong><em>Consider redesign of screen or if you will build many different Markdown files for each hack.</em></strong> Plan to leave challenge when providing lesson.</li>
+<li><strong><em>Plan Team Lesson and Issue(s)</em></strong>, requires checkboxes!!!
+<ul>
+<li>Planning and Presenting Lesson <mark>4 points</mark>
+<ul>
+<li>Planning. Issues used in preparation and tangibles completed in individual portions of work.</li>
+<li>Topic, presentation quality and expertise. Make sure you watch College Board videos on material, become expert on ideas. Perform other research. <strong><em>Quality of reflecting material is key to points</em></strong>. Communicate to student key ideas and learnings needed.</li>
+<li>Technicals and Data used. You must consider <strong><em>using Binary project or hacks to supplement teaching/learning of lesson material.</em></strong> Consider Career Tech blogs on Schedule as supplemental Topics/Hacks to the initial Binary Tech Talk. <strong><em>Coordinate with other Teams for the same week</em></strong>. Coordinate on Homework to make sure it is about 1.5 hours total, not on same hack. Be sure to emphasize Topics and Ideas with Technicals.</li>
+<li>Algorithm and homework assignment. Objective in <strong><em>each lesson is to teach Algorithm and key Data topics at the same time.</em></strong> Make sure Frontend code is created from homework. Homework should be limited to 30 minutes a lesson, including activities or games. Remainder of class should be to start homework. Publish materials and receive homework on Comment page of blog where you signed up for lesson.</li>
+</ul></li>
+<li>Grading: <mark>2 points</mark>. Plan to receive and grade homework. Set due date and be sure to grade within 2 to 3 days after Teaching.
+<ul>
+<li>Grading participation. Each person will be grading ~10 homeworks.<br>
+</li>
+<li>Completeness and quality. <strong><em>Homework grading and presenting summary and scores to each student is key part to a lessons</em></strong>. Grade each student on 3 criteria, it will be worth 1 point total. Set expectations at 90% if the attempt/meet criteria. Plus or minus on adding or missing criteria. Any submit is about 80%, any participation is about 70%.<br>
+</li>
+</ul></li>
+<li>Grading Summary: <mark>1 point</mark>. Submit a summary of all grades and reflection to Teacher. Make it easy for Teacher to record and know work was complete.</li>
+</ul></li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

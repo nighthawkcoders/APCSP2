@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.269">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2022-08-29">
+<meta name="description" content="An introduction to Data Abstraction using Python Lists [] and Python Dictionaries {}.">
+
+<title>APCSP2 - Lists, Dictionaries, Iteration</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="APCSP2 - Lists, Dictionaries, Iteration">
+<meta property="og:description" content="An introduction to Data Abstraction using Python Lists [] and Python Dictionaries {}.">
+<meta property="og:image" content="https://syeung2.github.io/APCSP2/blog/posts/python_lists.png">
+<meta property="og:site-name" content="APCSP2">
+<meta name="twitter:title" content="APCSP2 - Lists, Dictionaries, Iteration">
+<meta name="twitter:description" content="An introduction to Data Abstraction using Python Lists [] and Python Dictionaries {}.">
+<meta name="twitter:image" content="https://syeung2.github.io/APCSP2/blog/posts/python_lists.png">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">APCSP2</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog/index.html">
+ <span class="menu-text">Blog</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../schedule/index.html">
+ <span class="menu-text">Schedule</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../ap/index.html">
+ <span class="menu-text">AP Standards</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../cte/index.html">
+ <span class="menu-text">CTE Standards</span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">Lists, Dictionaries, Iteration</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#lists-and-dictionaries" id="toc-lists-and-dictionaries" class="nav-link active" data-scroll-target="#lists-and-dictionaries">Lists and Dictionaries</a></li>
+  <li><a href="#list-and-dictionary-purpose" id="toc-list-and-dictionary-purpose" class="nav-link" data-scroll-target="#list-and-dictionary-purpose">List and Dictionary purpose</a></li>
+  <li><a href="#formatted-output-of-listdictionary---for-loop" id="toc-formatted-output-of-listdictionary---for-loop" class="nav-link" data-scroll-target="#formatted-output-of-listdictionary---for-loop">Formatted output of List/Dictionary - for loop</a></li>
+  <li><a href="#alternate-methods-for-iteration---while-loop" id="toc-alternate-methods-for-iteration---while-loop" class="nav-link" data-scroll-target="#alternate-methods-for-iteration---while-loop">Alternate methods for iteration - while loop</a></li>
+  <li><a href="#calling-a-function-repeatedly---recursion" id="toc-calling-a-function-repeatedly---recursion" class="nav-link" data-scroll-target="#calling-a-function-repeatedly---recursion">Calling a function repeatedly - recursion</a></li>
+  <li><a href="#hacks" id="toc-hacks" class="nav-link" data-scroll-target="#hacks">Hacks</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/syeung2/APCSP2/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">Lists, Dictionaries, Iteration</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">1.A</div>
+    <div class="quarto-category">2.B</div>
+    <div class="quarto-category">3.C</div>
+    <div class="quarto-category">4.A</div>
+    <div class="quarto-category">C3.1</div>
+    <div class="quarto-category">C4.0</div>
+    <div class="quarto-category">C4.1</div>
+    <div class="quarto-category">C4.3</div>
+    <div class="quarto-category">C4.4</div>
+    <div class="quarto-category">C4.6</div>
+    <div class="quarto-category">C4.7</div>
+    <div class="quarto-category">C4.9</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    An introduction to Data Abstraction using Python Lists [] and Python Dictionaries {}.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">August 29, 2022</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<section id="lists-and-dictionaries" class="level3">
+<h3 class="anchored" data-anchor-id="lists-and-dictionaries">Lists and Dictionaries</h3>
+<p>As a quick review we used variables in the introduction last week. <mark>Variables all have a type</mark>: String, Integer, Float, List and Dictionary are some key types. In Python, variables are given a type at assignment, Types are important to understand and will impact operations, as we saw when we were required to user str() function in concatenation.</p>
+<ol type="1">
+<li>Developers often think of variables as primitives or collections. Look at this example and see if you can see hypothesize the difference between a primitive and a collection.<br>
+</li>
+<li>Take a minute and see if you can reference other elements in the list or other keys in the dictionary. Show output.</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Sample of Python Variables</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># variable of type string</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"What is the variable name/key?"</span>, <span class="st">"value?"</span>, <span class="st">"type?"</span>, <span class="st">"primitive or collection, why?"</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>name <span class="op">=</span> <span class="st">"John Doe"</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"name"</span>, name, <span class="bu">type</span>(name))</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># variable of type integer</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"What is the variable name/key?"</span>, <span class="st">"value?"</span>, <span class="st">"type?"</span>, <span class="st">"primitive or collection, why?"</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>age <span class="op">=</span> <span class="dv">18</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"age"</span>, age, <span class="bu">type</span>(age))</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co"># variable of type float</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"What is the variable name/key?"</span>, <span class="st">"value?"</span>, <span class="st">"type?"</span>, <span class="st">"primitive or collection, why?"</span>)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>score <span class="op">=</span> <span class="fl">90.0</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"score"</span>, score, <span class="bu">type</span>(score))</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="co"># variable of type list (many values in one variable)</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"What is variable name/key?"</span>, <span class="st">"value?"</span>, <span class="st">"type?"</span>, <span class="st">"primitive or collection?"</span>)</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"What is different about the list output?"</span>)</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>langs <span class="op">=</span> [<span class="st">"Python"</span>, <span class="st">"JavaScript"</span>, <span class="st">"Java"</span>]</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"langs"</span>, langs, <span class="bu">type</span>(langs), <span class="st">"length"</span>, <span class="bu">len</span>(langs))</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"- langs[0]"</span>, langs[<span class="dv">0</span>], <span class="bu">type</span>(langs[<span class="dv">0</span>]))</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="co"># variable of type dictionary (a group of keys and values)</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"What is the variable name/key?"</span>, <span class="st">"value?"</span>, <span class="st">"type?"</span>, <span class="st">"primitive or collection, why?"</span>)</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"What is different about the dictionary output?"</span>)</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>person <span class="op">=</span> {</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>    <span class="st">"name"</span>: name,</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>    <span class="st">"age"</span>: age,</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>    <span class="st">"score"</span>: score,</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>    <span class="st">"langs"</span>: langs</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"person"</span>, person, <span class="bu">type</span>(person), <span class="st">"length"</span>, <span class="bu">len</span>(person))</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'- person["name"]'</span>, person[<span class="st">"name"</span>], <span class="bu">type</span>(person[<span class="st">"name"</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="list-and-dictionary-purpose" class="level3">
+<h3 class="anchored" data-anchor-id="list-and-dictionary-purpose">List and Dictionary purpose</h3>
+<p>Our society is being built on information. <mark>List and Dictionaries are used to collect information</mark>. Mostly, when information is collected it is formed into patterns. As that pattern is established you will be able collect many instances of that pattern. - List is used to collect many instances of a pattern - Dictionary is used to define data patterns. - Iteration is often used to process through lists.</p>
+<p>To start exploring more deeply into List, Dictionary and Iteration this example will explore constructing a List of people and cars. - As we learned above, a List is a data type: class ‘list’ - A <mark>‘list’ data type has the method ‘.append(expression)’</mark> that allows you to add to the list. A class usually has extra method to support working with its objects/instances. - In the example below, the expression is appended to the ‘list’ is the data type: class ‘dict’ - At the end, you see a fairly complicated data structure. This is a <mark>list of dictionaries</mark>, or a collection of many similar data patterns. The output looks similar to JavaScript Object Notation (JSON), Jekyll/GitHub pages yml files, FastPages Front Matter. As discussed we will see this key/value patter often, you will be required to understand this data structure and understand the parts. Just believe it is peasy ;) and it will become so.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define an empty List called InfoDb</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>InfoDb <span class="op">=</span> []</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># InfoDB is a data structure with expected Keys and Values</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Append to List a Dictionary of key/values related to a person and cars</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>InfoDb.append({</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"FirstName"</span>: <span class="st">"John"</span>,</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"LastName"</span>: <span class="st">"Mortensen"</span>,</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"DOB"</span>: <span class="st">"October 21"</span>,</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Residence"</span>: <span class="st">"San Diego"</span>,</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Email"</span>: <span class="st">"jmortensen@powayusd.com"</span>,</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Owns_Cars"</span>: [<span class="st">"2015-Fusion"</span>, <span class="st">"2011-Ranger"</span>, <span class="st">"2003-Excursion"</span>, <span class="st">"1997-F350"</span>, <span class="st">"1969-Cadillac"</span>]</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Append to List a 2nd Dictionary of key/values</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>InfoDb.append({</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"FirstName"</span>: <span class="st">"Sunny"</span>,</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"LastName"</span>: <span class="st">"Naidu"</span>,</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">"DOB"</span>: <span class="st">"August 2"</span>,</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Residence"</span>: <span class="st">"Temecula"</span>,</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Email"</span>: <span class="st">"snaidu@powayusd.com"</span>,</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Owns_Cars"</span>: [<span class="st">"4Runner"</span>]</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the data structure</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(InfoDb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[{'FirstName': 'John', 'LastName': 'Mortensen', 'DOB': 'October 21', 'Residence': 'San Diego', 'Email': 'jmortensen@powayusd.com', 'Owns_Cars': ['2015-Fusion', '2011-Ranger', '2003-Excursion', '1997-F350', '1969-Cadillac']}, {'FirstName': 'Sunny', 'LastName': 'Naidu', 'DOB': 'August 2', 'Residence': 'Temecula', 'Email': 'snaidu@powayusd.com', 'Owns_Cars': ['4Runner']}]</code></pre>
+</div>
+</div>
+</section>
+<section id="formatted-output-of-listdictionary---for-loop" class="level3">
+<h3 class="anchored" data-anchor-id="formatted-output-of-listdictionary---for-loop">Formatted output of List/Dictionary - for loop</h3>
+<p>Managing data in Lists and Dictionaries is for the convenience of passing the data across the internet, to applications, or preparing it to be stored into a database. It is a great way to exchange data between programs and programmers. Exchange of data between programs includes the data type the method/function and the format of the data type. These concepts are key to learning how to write functions, receive, and return data. This process is often referred to as an <mark>Application Programming Interface (API)</mark>.</p>
+<p>Next, we will take the stored data and output it within our notebook. There are multiple steps to this process… - <mark>Preparing a function to format the data</mark>, the print_data() function receives a parameter called “d_rec” short for dictionary record. It then references different keys within [] square brackets.<br>
+- <mark>Preparing a function to iterate through the list</mark>, the for_loop() function uses an enhanced for loop that pull record by record out of InfoDb until the list is empty. Each time through the loop it call print_data(record), which passes the dictionary record to that function. - Finally, you need to <mark>activate your function</mark> with the call to the defined function for_loop(). Functions are defined, not activated until they are called. By placing for_loop() at the left margin the function is activated.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This jupyter cell has dependencies on one or more cells above</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># print function: given a dictionary of InfoDb content</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> print_data(d_rec):</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(d_rec[<span class="st">"FirstName"</span>], d_rec[<span class="st">"LastName"</span>])  <span class="co"># using comma puts space between values</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\t</span><span class="st">"</span>, <span class="st">"Residence:"</span>, d_rec[<span class="st">"Residence"</span>]) <span class="co"># \t is a tab indent</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\t</span><span class="st">"</span>, <span class="st">"Birth Day:"</span>, d_rec[<span class="st">"DOB"</span>])</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\t</span><span class="st">"</span>, <span class="st">"Cars: "</span>, end<span class="op">=</span><span class="st">""</span>)  <span class="co"># end="" make sure no return occurs</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">", "</span>.join(d_rec[<span class="st">"Owns_Cars"</span>]))  <span class="co"># join allows printing a string list with separator</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>()</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co"># for loop algorithm iterates on length of InfoDb</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> for_loop():</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"For loop output</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> record <span class="kw">in</span> InfoDb:</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>        print_data(record)</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>for_loop()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>For loop output
+
+John Mortensen
+     Residence: San Diego
+     Birth Day: October 21
+     Cars: 2015-Fusion, 2011-Ranger, 2003-Excursion, 1997-F350, 1969-Cadillac
+
+Sunny Naidu
+     Residence: Temecula
+     Birth Day: August 2
+     Cars: 4Runner
+</code></pre>
+</div>
+</div>
+</section>
+<section id="alternate-methods-for-iteration---while-loop" class="level3">
+<h3 class="anchored" data-anchor-id="alternate-methods-for-iteration---while-loop">Alternate methods for iteration - while loop</h3>
+<p>In coding, there are usually many ways to achieve the same result. Defined are functions illustrating using index to reference records in a list, these methods are called a “while” loop and “recursion”. - The while_loop() function contains a while loop, “while i &lt; len(InfoDb):”. This counts through the elements in the list start at zero, and passes the record to print_data()</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This jupyter cell has dependencies on one or more cells above</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># while loop algorithm contains an initial n and an index incrementing statement (n += 1)</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> while_loop():</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"While loop output</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    i <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> i <span class="op">&lt;</span> <span class="bu">len</span>(InfoDb):</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>        record <span class="op">=</span> InfoDb[i]</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>        print_data(record)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>        i <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>while_loop()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>While loop output
+
+John Mortensen
+     Residence: San Diego
+     Birth Day: October 21
+     Cars: 2015-Fusion, 2011-Ranger, 2003-Excursion, 1997-F350, 1969-Cadillac
+
+Sunny Naidu
+     Residence: Temecula
+     Birth Day: August 2
+     Cars: 4Runner
+</code></pre>
+</div>
+</div>
+</section>
+<section id="calling-a-function-repeatedly---recursion" class="level3">
+<h3 class="anchored" data-anchor-id="calling-a-function-repeatedly---recursion">Calling a function repeatedly - recursion</h3>
+<p>This final technique achieves looping by calling itself repeatedly. - recursive_loop(i) function is primed with the value 0 on its activation with “recursive_loop(0)” - the last statement indented inside the if statement “recursive_loop(i + 1)” activates another call to the recursive_loop(i) function, each time i is increasing - ultimately the “if i &lt; len(InfoDb):” will evaluate to false and the program ends</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This jupyter cell has dependencies on one or more cells above</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># recursion algorithm loops incrementing on each call (n + 1) until exit condition is met</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> recursive_loop(i):</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> i <span class="op">&lt;</span> <span class="bu">len</span>(InfoDb):</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>        record <span class="op">=</span> InfoDb[i]</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>        print_data(record)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>        recursive_loop(i <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Recursive loop output</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>recursive_loop(<span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="hacks" class="level2">
+<h2 class="anchored" data-anchor-id="hacks">Hacks</h2>
+<ul>
+<li>Add a couple of records to the InfoDb</li>
+<li>Try to do a for loop with an index</li>
+<li>Pair Share code somethings creative or unique, with loops and data. Hints…
+<ul>
+<li>Would it be possible to output data in a reverse order?</li>
+<li>Are there other methods that can be performed on lists?</li>
+<li>Could you create new or add to dictionary data set? Could you do it with input?</li>
+<li>Make a quiz that stores in a List of Dictionaries.</li>
+</ul></li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
