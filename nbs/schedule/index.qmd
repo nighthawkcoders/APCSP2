@@ -1,7 +1,3 @@
----
-title: Schedule
----
-
 <!-- posts and pages used as sources -->
 {% assign all = null | compact %}
 {% assign all = all | concat:site.posts | concat:site.pages %}

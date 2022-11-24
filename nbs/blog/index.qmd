@@ -7,6 +7,6 @@ listing:
   sort-ui: false
   filter-ui: false
   categories: true
-  feed: false
+  feed: true
 page-layout: full
 ---

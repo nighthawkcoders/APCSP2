@@ -19,8 +19,8 @@ website:
       href: blog/index.qmd
     - text: "Schedule"
       href: schedule/index.qmd
-  # sidebar:
-  #   style: floating
+  sidebar:
+    style: floating
 
 
-metadata-files: [nbdev.yml, sidebar.yml]
+metadata-files: [nbdev.yml]
