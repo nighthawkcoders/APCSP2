@@ -17,8 +17,13 @@ website:
     left:
     - text: "Blog"
       href: blog/index.qmd
+    right:
     - text: "Schedule"
       href: schedule/index.qmd
+    - text: "AP Standards"
+      href: ap/index.qmd
+    - text: "CTE Standards"
+      href: cte/index.qmd
   sidebar:
     style: floating
 

@@ -3,6 +3,9 @@ website:
     contents:
       - index.ipynb
       - 00_core.ipynb
+      - section: ap
+        contents:
+          - ap/index.qmd
       - section: blog
         contents:
           - blog/index.qmd
@@ -93,6 +96,9 @@ website:
               - section: welcome
                 contents:
                   - blog/posts/welcome/index.qmd
+      - section: cte
+        contents:
+          - cte/index.qmd
       - section: schedule
         contents:
           - schedule/index.qmd
